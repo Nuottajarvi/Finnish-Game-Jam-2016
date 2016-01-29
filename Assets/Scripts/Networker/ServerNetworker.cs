@@ -30,6 +30,12 @@ public class ServerNetworker : MonoBehaviour {
 		}
 	}
 
+    private void SetWordActionIn(JSONNode data)
+    {
+
+
+    }
+
 	private void MoveIn(JSONNode data){
 		GameObject cube = GameObject.Find("Cube");
 		cube.transform.position += new Vector3(data["x"].AsFloat, data["y"].AsFloat, 0);

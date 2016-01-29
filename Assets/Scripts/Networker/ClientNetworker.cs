@@ -44,6 +44,17 @@ public class ClientNetworker : MonoBehaviour {
 		udpSend.Send(data);
 	}
 
+    //Send completed action
+    public void WordActionOut(WordActionGenerator.WordAction action) {
+        JSONNode data = new JSONClass();
+
+        data["function"] = "wordActionOut";
+        data["wordAction"] = action.ToString();
+
+        udpSend.Send(data);
+
+    }
+
     //Set current words
     public void SetWordIn(JSONNode data) {
 
