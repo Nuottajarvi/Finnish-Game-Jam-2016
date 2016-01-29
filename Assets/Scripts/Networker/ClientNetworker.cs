@@ -46,8 +46,22 @@ public class ClientNetworker : MonoBehaviour {
 
     //Set current words
     public void SetWordIn(JSONNode data) {
+
+        //Interpret the received results
         string[] wordArray = data["word"].Value.Split(';');
         string[] actionArray = data["wordAction"].Value.Split(';');
+
+        //get uiphonesscreen script where the word and actions are stored
+        UI_phonescreen_script uiPhoneScreenScript = GameObject.Find("UI_phonescreen").GetComponent<UI_phonescreen_script>();
+        uiPhoneScreenScript.words = wordArray;
+
+        WordActionGenerator.WordAction[] mappedActionArray = new WordActionGenerator.WordAction[actionArray.Length];
+        //Map received values to Enums
+        for (int i = 0; i < actionArray.Length; i++) {
+            mappedActionArray[i] = (WordActionGenerator.WordAction)Enum.Parse(typeof(WordActionGenerator.WordAction) , actionArray[i]);
+        }
+        uiPhoneScreenScript.wordActions = mappedActionArray;
+
     }
 
 }
