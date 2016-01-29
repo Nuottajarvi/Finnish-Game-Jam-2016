@@ -26,9 +26,10 @@ public class ClientNetworker : MonoBehaviour {
 		foreach(string UDPPacket in UDPPackets){
 			var values = JSON.Parse(UDPPacket);
 
-			/*switch(values["function"].Value){
-				case "broadcastServer": SetServer(values); break;
-			}*/
+			switch(values["function"].Value){
+                //case "broadcastServer": SetServer(values); break;
+                case "SendWord": SetWordIn(values); break;
+            }
 		}
 	}
 
@@ -42,4 +43,11 @@ public class ClientNetworker : MonoBehaviour {
 	
 		udpSend.Send(data);
 	}
+
+    //Set current words
+    public void SetWordIn(JSONNode data) {
+        string[] wordArray = data["word"].Value.Split(';');
+        string[] actionArray = data["wordAction"].Value.Split(';');
+    }
+
 }
