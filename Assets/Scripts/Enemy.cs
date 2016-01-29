@@ -25,16 +25,16 @@ public class Enemy : MonoBehaviour {
     // Current move speed
     float moveSpeed;
 
-	// Use this for initialization
-	void Start () {
+    void Awake() {
         enemyTransform = transform;
+        if(summoningCircle == null) summoningCircle = GameObject.Find("SummoningCircle").transform;
+    }
 
+    void OnEnable() {
         moveSpeed = StartMoveSpeed;
 
-        if(summoningCircle == null) summoningCircle = GameObject.Find("SummoningCircle").transform;
-
         ChooseSpawnPosition();
-	}
+    }
 
     void ChooseSpawnPosition() {
         System.Random rand = new System.Random();
@@ -65,6 +65,6 @@ public class Enemy : MonoBehaviour {
 
     void ReachedCircle() {
         Debug.Log("Enemy reached to the circle");
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

@@ -12,11 +12,14 @@ public class EnemySpawner : MonoBehaviour {
 
     WaitForSeconds spawnWait;
 
+    Transform enemyParent;
+
 	// Use this for initialization
 	void Start () {
         spawning = true;
 
         enemies = new List<Enemy>();
+        enemyParent = GameObject.Find("Enemies").transform;
 
         GameObject firstEnemyObject = Instantiate(Resources.Load("Prefabs/Enemy")) as GameObject;
         enemies.Add(firstEnemyObject.GetComponent<Enemy>());
@@ -41,10 +44,25 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     Enemy CreateEnemy() {
-        GameObject enemyObject = Instantiate(enemies[0].gameObject) as GameObject;
+        Enemy enemy = GetFreeEnemy();
 
-        Enemy enemy = enemyObject.GetComponent<Enemy>();
+        if(enemy == null) {
+            GameObject enemyObject = Instantiate(Resources.Load("Prefabs/Enemy")) as GameObject;
+            enemyObject.transform.parent = enemyParent;
+            enemy = enemyObject.GetComponent<Enemy>();
+            enemies.Add(enemyObject.GetComponent<Enemy>());
+        }
+
+        enemy.gameObject.SetActive(true);
 
         return enemy;
+    }
+
+    Enemy GetFreeEnemy() {
+        for(int i = 0; i < enemies.Count; i++) {
+            if(!enemies[i].gameObject.activeInHierarchy) return enemies[i];
+        }
+
+        return null;
     }
 }
