@@ -28,7 +28,7 @@ public class ClientWordActionTracker : MonoBehaviour {
     /* End shake detection variables */
 
     /* Start swipe detection variables */
-    public float minSwipeDist = 1;
+    public float minSwipeDist = 50;
     private Vector2 startPos;
     /* end swipe detectoion variables */
 
@@ -108,14 +108,18 @@ public class ClientWordActionTracker : MonoBehaviour {
         //A swipe that doesn't move enough is considered as a tap on screen
         if (Input.touchCount > 0)
         {
+            //Use the first swipe
             Touch touch = Input.touches[0];
             switch (touch.phase)
             {
+                //Start tracking a swipe
                 case TouchPhase.Began:
                     startPos = touch.position;
                     swiping = false;
                     tapping = false;
                     break;
+                //End swipe, check if swipe had enough distance
+                //If not, consider the event as a tap
                 case TouchPhase.Ended:
                     float swipeDist = (new Vector3(touch.position.x, touch.position.y, 0) - new Vector3(startPos.x, startPos.y, 0)).magnitude;
                     if (swipeDist > minSwipeDist)
@@ -128,6 +132,7 @@ public class ClientWordActionTracker : MonoBehaviour {
                     break;
             }
         }
+        //If no touches are happening, swiping and tapping aren't happening for sure
         else {
             swiping = false;
             tapping = false;
