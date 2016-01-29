@@ -3,6 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class EnemySpawner : MonoBehaviour {
+    static EnemySpawner instance;
+
+    public static EnemySpawner Instance {
+        get { return instance; }
+    }
+
     bool spawning;
 
     List<Enemy> enemies;
@@ -14,6 +20,26 @@ public class EnemySpawner : MonoBehaviour {
 
     Transform enemyParent;
 
+    // Speed at easiest difficulty when game starts
+    const float StartMoveSpeed = 0.5f;
+
+    // How much move speed is increased each time
+    const float MoveSpeedIncrease = 0.1f;
+
+    // Max speed after which speed isn't increased
+    const float MaxMoveSpeed = 1.8f;
+
+    float currentMoveSpeed;
+
+    const float DifficultyIncreaseDeltaTime = 15f;
+    float lastDifficultyIncreaseTime;
+
+    void Awake() {
+        instance = this;
+
+        currentMoveSpeed = StartMoveSpeed;
+    }
+
 	// Use this for initialization
 	void Start () {
         spawning = true;
@@ -21,38 +47,35 @@ public class EnemySpawner : MonoBehaviour {
         enemies = new List<Enemy>();
         enemyParent = GameObject.Find("Enemies").transform;
 
-        GameObject firstEnemyObject = Instantiate(Resources.Load("Prefabs/Enemy")) as GameObject;
-        enemies.Add(firstEnemyObject.GetComponent<Enemy>());
-
         spawnWait = new WaitForSeconds(spawnDeltaTime);
 
         StartCoroutine("SpawnRoutine");
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
     IEnumerator SpawnRoutine() {
+        lastDifficultyIncreaseTime = Time.time;
+
         while(spawning) {
             yield return spawnWait;
 
-            Enemy enemy = CreateEnemy();
+            if(Time.time - lastDifficultyIncreaseTime > DifficultyIncreaseDeltaTime) {
+                IncreaseDifficulty();
+                lastDifficultyIncreaseTime = Time.time;
+            }
+
+            Enemy enemy = SpawnEnemy();
             enemies.Add(enemy);
         }
     }
 
-    Enemy CreateEnemy() {
+    Enemy SpawnEnemy() {
         Enemy enemy = GetFreeEnemy();
 
         if(enemy == null) {
-            GameObject enemyObject = Instantiate(Resources.Load("Prefabs/Enemy")) as GameObject;
-            enemyObject.transform.parent = enemyParent;
-            enemy = enemyObject.GetComponent<Enemy>();
-            enemies.Add(enemyObject.GetComponent<Enemy>());
+            enemy = InstantiateEnemy();
         }
 
+        enemy.MoveSpeed = currentMoveSpeed;
         enemy.gameObject.SetActive(true);
 
         return enemy;
@@ -64,5 +87,20 @@ public class EnemySpawner : MonoBehaviour {
         }
 
         return null;
+    }
+
+    Enemy InstantiateEnemy() {
+        GameObject enemyObject = Instantiate(Resources.Load("Prefabs/Enemy")) as GameObject;
+        enemyObject.transform.parent = enemyParent;
+        Enemy enemy = enemyObject.GetComponent<Enemy>();
+        enemies.Add(enemyObject.GetComponent<Enemy>());
+
+        return enemy;
+    }
+
+    void IncreaseDifficulty() {
+        currentMoveSpeed += MoveSpeedIncrease;
+
+        currentMoveSpeed = Mathf.Min(currentMoveSpeed, MaxMoveSpeed);
     }
 }

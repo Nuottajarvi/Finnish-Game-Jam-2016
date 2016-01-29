@@ -6,24 +6,18 @@ public class Enemy : MonoBehaviour {
 
     Transform enemyTransform;
 
-    const int SpawnDistanceMin = 25;
-    const int SpawnDistanceMax = 32;
+    const int SpawnDistanceMin = 22;
+    const int SpawnDistanceMax = 38;
 
-    // Speed at easiest difficulty when game starts
-    const float StartMoveSpeed = 1.5f;
-
-    // How much move speed is increased each time
-    const float MoveSpeedIncrease = 0.1f;
-
-    // Max speed after which speed isn't increased
-    const float MaxMoveSpeed = 2.5f;
 
     // How far away enemy has to be to center of summoning circle
     // when enemy has 'won'
     const float PlayerReachDistance = 5f;
 
     // Current move speed
-    float moveSpeed;
+    public float MoveSpeed {
+        get; set;
+    }
 
     void Awake() {
         enemyTransform = transform;
@@ -31,8 +25,6 @@ public class Enemy : MonoBehaviour {
     }
 
     void OnEnable() {
-        moveSpeed = StartMoveSpeed;
-
         ChooseSpawnPosition();
     }
 
@@ -50,7 +42,7 @@ public class Enemy : MonoBehaviour {
     }
 
 	// Update is called once per frame
-	void Update () {
+	void Update() {
         Vector3 targetDir = summoningCircle.position - enemyTransform.position;
         float distanceToCircle = targetDir.magnitude;
 
@@ -60,11 +52,10 @@ public class Enemy : MonoBehaviour {
 
         targetDir = targetDir.normalized;
         
-        enemyTransform.Translate(targetDir * moveSpeed * Time.deltaTime);
+        enemyTransform.Translate(targetDir * MoveSpeed * Time.deltaTime);
 	}
 
     void ReachedCircle() {
-        Debug.Log("Enemy reached to the circle");
         gameObject.SetActive(false);
     }
 }
