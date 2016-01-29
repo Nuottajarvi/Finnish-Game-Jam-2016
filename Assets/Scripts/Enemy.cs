@@ -7,8 +7,9 @@ public class Enemy : MonoBehaviour {
     Transform enemyTransform;
 
     const int SpawnDistanceMin = 22;
-    const int SpawnDistanceMax = 38;
+    const int SpawnDistanceMax = 25;
 
+    public static int ActiveCount;
 
     // How far away enemy has to be to center of summoning circle
     // when enemy has 'won'
@@ -26,24 +27,46 @@ public class Enemy : MonoBehaviour {
 
     void OnEnable() {
         ChooseSpawnPosition();
+
+        ActiveCount++;
+    }
+
+    void OnDisable() {
+        ActiveCount--;
     }
 
     void ChooseSpawnPosition() {
         System.Random rand = new System.Random();
 
         float spawnDirectionRad = (float)rand.NextDouble() * 2 * Mathf.PI;
+        float spawnDirectionDeg = (spawnDirectionRad / (2 * Mathf.PI)) * 360;
+
         int spawnDistance = rand.Next(SpawnDistanceMin, SpawnDistanceMax);
 
-        Vector3 spawnOffset = new Vector3(Mathf.Cos(spawnDirectionRad) * spawnDistance,
-                                          Mathf.Sin(spawnDirectionRad) * spawnDistance,
-                                          0f);
+        enemyTransform.position = Vector3.zero;
 
+        Vector3 spawnOffset = new Vector3(Mathf.Cos(spawnDirectionRad),
+                                          Mathf.Sin(spawnDirectionRad),
+                                          0f).normalized;
+
+        spawnOffset *= spawnDistance;
+        spawnOffset.z = -3f;
         enemyTransform.Translate(spawnOffset);
+
+        Vector3 rotationTarget = new Vector3(summoningCircle.position.x,
+                                             summoningCircle.position.y,
+                                             enemyTransform.position.z);
+
+        enemyTransform.Rotate(-Vector3.forward * (180 - spawnDirectionDeg));
+
+        GetComponent<SpriteRenderer>().flipY = enemyTransform.position.x > 0;
     }
 
 	// Update is called once per frame
 	void Update() {
         Vector3 targetDir = summoningCircle.position - enemyTransform.position;
+        targetDir.z = 0;
+
         float distanceToCircle = targetDir.magnitude;
 
         if(distanceToCircle <= PlayerReachDistance) {
@@ -51,11 +74,15 @@ public class Enemy : MonoBehaviour {
         }
 
         targetDir = targetDir.normalized;
-        
-        enemyTransform.Translate(targetDir * MoveSpeed * Time.deltaTime);
+
+        enemyTransform.position += targetDir * MoveSpeed * Time.deltaTime;
+
+        //enemyTransform.Translate(targetDir * MoveSpeed * Time.deltaTime);
 	}
 
     void ReachedCircle() {
         gameObject.SetActive(false);
+
+        GameController.Instance.ReduceHealth();
     }
 }

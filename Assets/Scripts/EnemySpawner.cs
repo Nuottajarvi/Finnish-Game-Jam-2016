@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class EnemySpawner : MonoBehaviour {
     static EnemySpawner instance;
@@ -13,21 +14,33 @@ public class EnemySpawner : MonoBehaviour {
 
     List<Enemy> enemies;
 
-    // Time between spawning new enemy
-    float spawnDeltaTime = 4f;
+    [SerializeField]
+    public Text waveText;
 
-    WaitForSeconds spawnWait;
+    public int CurrentWave {
+        get; private set;
+    }
+
+    // Time between spawning new enemy
+    float singleSpawnDeltaTime = 4f;
+    float waveSpawnDeltaTime = 5f;
+
+    WaitForSeconds spawnWaitSingle;
+    WaitForSeconds spawnWaitWave;
+
+    // How many enemies still have to be spawned for the current wave
+    int waveEnemiesLeft;
 
     Transform enemyParent;
 
     // Speed at easiest difficulty when game starts
-    const float StartMoveSpeed = 0.5f;
+    const float StartMoveSpeed = 0.9f;
 
     // How much move speed is increased each time
     const float MoveSpeedIncrease = 0.1f;
 
     // Max speed after which speed isn't increased
-    const float MaxMoveSpeed = 1.8f;
+    const float MaxMoveSpeed = 2.5f;
 
     float currentMoveSpeed;
 
@@ -47,7 +60,8 @@ public class EnemySpawner : MonoBehaviour {
         enemies = new List<Enemy>();
         enemyParent = GameObject.Find("Enemies").transform;
 
-        spawnWait = new WaitForSeconds(spawnDeltaTime);
+        spawnWaitSingle = new WaitForSeconds(singleSpawnDeltaTime);
+        spawnWaitWave = new WaitForSeconds(waveSpawnDeltaTime);
 
         StartCoroutine("SpawnRoutine");
 	}
@@ -56,16 +70,30 @@ public class EnemySpawner : MonoBehaviour {
         lastDifficultyIncreaseTime = Time.time;
 
         while(spawning) {
-            yield return spawnWait;
+            while(waveEnemiesLeft > 0) {
+                SpawnEnemy();
+                yield return spawnWaitSingle;
 
-            if(Time.time - lastDifficultyIncreaseTime > DifficultyIncreaseDeltaTime) {
-                IncreaseDifficulty();
-                lastDifficultyIncreaseTime = Time.time;
+                waveEnemiesLeft--;
             }
 
-            Enemy enemy = SpawnEnemy();
-            enemies.Add(enemy);
+            // Wait until all enemies have reached circle/died
+            while(Enemy.ActiveCount > 0) {
+                yield return null;
+            }
+
+            NextWave();
+            yield return spawnWaitWave; // Wait before starting to spawn enemies to this wave
         }
+    }
+
+    void NextWave() {
+        CurrentWave++;
+        waveText.text = "Wave: " + CurrentWave.ToString();
+
+        IncreaseMoveSpeed();
+
+        waveEnemiesLeft = 3 + CurrentWave;
     }
 
     Enemy SpawnEnemy() {
@@ -98,7 +126,7 @@ public class EnemySpawner : MonoBehaviour {
         return enemy;
     }
 
-    void IncreaseDifficulty() {
+    void IncreaseMoveSpeed() {
         currentMoveSpeed += MoveSpeedIncrease;
 
         currentMoveSpeed = Mathf.Min(currentMoveSpeed, MaxMoveSpeed);
