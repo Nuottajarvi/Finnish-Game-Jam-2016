@@ -14,12 +14,16 @@ public class EnemySpawner : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        enemies.Add(CreateEnemy());
+        spawning = true;
+
+        enemies = new List<Enemy>();
 
         GameObject firstEnemyObject = Instantiate(Resources.Load("Prefabs/Enemy")) as GameObject;
         enemies.Add(firstEnemyObject.GetComponent<Enemy>());
 
         spawnWait = new WaitForSeconds(spawnDeltaTime);
+
+        StartCoroutine("SpawnRoutine");
 	}
 	
 	// Update is called once per frame
