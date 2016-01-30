@@ -5,14 +5,20 @@ public class PhoneAction : MonoBehaviour {
 
     public ClientNetworker clientNetworker;
 
-    public int swipeTreshold = 100;
+    protected int swipeTreshold = 100;
 
     //Variable to hold start position of a touch: used by tap and swipe
     protected Vector2 startPos;
 
-    // Use this for initialization
-    void Start () {
-	
+	//Send timer is used to limit the amount of actions sent
+	protected float sendTimer;
+	protected float sendLimit;
+
+	// Use this for initialization
+	void Start () {
+		sendTimer = 0;
+		//time between shortest send in seconds
+		sendLimit = 1.0f;
 	}
 	
 	// Update is called once per frame

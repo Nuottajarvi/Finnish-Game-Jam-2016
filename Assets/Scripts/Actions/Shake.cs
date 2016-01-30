@@ -18,8 +18,7 @@ public class Shake : PhoneAction {
 	bool counting;
 	float timer;
 
-	//Send timer is used to limit the amount of shakes sent
-	float sendTimer;
+
 	/* End shake detection variables */
 
 
@@ -27,7 +26,7 @@ public class Shake : PhoneAction {
 
 	// Use this for initialization
 	void Start () {
-		sendTimer = 0;
+		sendTimer = 0.0f;
 	}
 
 	bool ShakeDetector()
@@ -87,7 +86,7 @@ public class Shake : PhoneAction {
 		sendTimer = sendTimer + Time.deltaTime;
 
 		ShakeDetector();
-		if (counting && sendTimer > 1)
+		if (counting && sendTimer > sendLimit)
 		{
 			clientNetworker.WordOut(WordActionGenerator.WordAction.Shake);
 			sendTimer = 0;
