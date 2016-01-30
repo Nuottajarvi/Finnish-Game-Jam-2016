@@ -13,6 +13,10 @@ public class Tap : PhoneAction {
 
 		sendTimer = sendTimer + Time.deltaTime;
 
+		if (Input.GetMouseButtonUp(0)) {
+			clientNetworker.WordOut(WordActionGenerator.WordAction.Tap);
+		}
+
         //A swipe that doesn't move enough is considered as a tap on screen
         if (Input.touchCount > 0)
         {
