@@ -30,10 +30,12 @@ public class ClientNetworker : MonoBehaviour {
 		foreach(string UDPPacket in UDPPackets){
 			var values = JSON.Parse(UDPPacket);
 
-			switch(values["function"].Value){
-				case "Confirm": ConfirmIn(values); break;
-		        	case "SendWord": SetWordIn(values); break;
-		        }
+			if(values["id"] == id){
+				switch(values["function"].Value){
+					case "Confirm": ConfirmIn(values); break;
+			        	case "SendWord": SetWordIn(values); break;
+			        }
+			}
 		}
 
 		time += Time.deltaTime;
@@ -90,8 +92,8 @@ public class ClientNetworker : MonoBehaviour {
             }
         }
 
-		data["id"] = id;
-		data["function"] = "wordOut";
+	data["id"] = id;
+	data["function"] = "wordOut";
         data["words"] = arrayToSend;
 
         udpSend.Send(data);

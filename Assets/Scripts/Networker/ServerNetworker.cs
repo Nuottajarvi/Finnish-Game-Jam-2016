@@ -61,12 +61,13 @@ public class ServerNetworker : MonoBehaviour {
 			lc.AddPlayer(data["id"]);
 		}
 
-		ConfirmConnectionOut();
+		ConfirmConnectionOut(data["id"]);
 	}
 
-	private void ConfirmConnectionOut(){
+	private void ConfirmConnectionOut(JSONNode dataIn){
 		JSONNode data = new JSONClass();
 		data["function"] = "Confirm";
+		data["id"] = dataIn["id"];
 
 		udpSend.Send(data);
 	}
