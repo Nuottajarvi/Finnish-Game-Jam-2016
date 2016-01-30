@@ -5,6 +5,12 @@ using SimpleJSON;
 using System;
 
 public class ServerNetworker : MonoBehaviour {
+	static ServerNetworker instance;
+	public static ServerNetworker Instance {
+		get {
+			return instance;
+		}
+	}
 
 	private string id;
 
@@ -12,6 +18,11 @@ public class ServerNetworker : MonoBehaviour {
 	UDPSend udpSend;
 
 	List<string> connectedPlayers;
+
+	void Awake() {
+		if(instance == null)
+			instance = this;
+	}
 
 	void Start(){
 
@@ -65,29 +76,22 @@ public class ServerNetworker : MonoBehaviour {
 	}
 
 	//Function to send list of words and actions to client
-	private void SendWordOut(List<string> word, List<WordActionGenerator.WordAction> wordAction) {
+	public void SendWordOut(List<Word> words, string clientId) {
 		JSONNode data = new JSONClass();
 
 		//Set the function
 		data["function"] = "SendWord";
 
-		//Empty container strings
-		string wordString = "";
-		string actionString = "";
+		data["words"] = new JSONArray();
 
-		//Word and wordaction lists are equal length
-		for (int i = 0; i < word.Count; i++) {
-			//strings are values separated with ;
-			wordString = wordString + word[i] + ";";
-			actionString = actionString + wordAction[i] + ";";
+		for(int i = 0; i < words.Count; i++) {
+			data["words"][i] = new JSONClass();
+
+			data["words"][i]["word"] = words[i].word;
+			data["words"][i]["action"].AsInt = (int)words[i].action;
 		}
 
-		//Remove last ; from the end of string
-		wordString = wordString.Remove(wordString.Length - 1);
-		actionString = actionString.Remove(actionString.Length - 1);
-
-		data["word"] = wordString;
-		data["wordAction"] = actionString;
+		data["id"] = words[0].clientId;
 
 		udpSend.Send(data);
 	}

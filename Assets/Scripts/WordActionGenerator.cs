@@ -6,7 +6,7 @@ public class WordActionGenerator : MonoBehaviour {
     public enum WordAction { Swipe, Shake, Tap }
 
     //Get random action for a word
-    public static WordAction getWordAction() {
+    public static WordAction GetWordAction() {
         var v = WordAction.GetValues(typeof(WordAction));
         return (WordAction)v.GetValue(new System.Random().Next(v.Length));
     }
