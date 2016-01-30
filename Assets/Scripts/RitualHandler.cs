@@ -49,11 +49,12 @@ public class RitualHandler {
 
 	void DistributeWords() {
 		// TODO: Get client ids
-		string[] clientIds = new string[] { "2", "5", "6", "7" };
+		Debug.Log("Distributing words");
+		string[] clientIds = /*new string[] { "2", "5", "6", "7" }*/ ServerNetworker.Instance.connectedPlayers.ToArray();
 
 		currentWords.Clear();
 
-		List<string> idsLeft = new List<string>(clientIds);
+		List<string> idsLeft = /*new List<string>(clientIds)*/ ServerNetworker.Instance.connectedPlayers;
 
 		WordActionGenerator.WordAction[] possibleActions = System.Enum.GetValues(typeof(WordActionGenerator.WordAction)) as WordActionGenerator.WordAction[];
 
@@ -72,7 +73,15 @@ public class RitualHandler {
 			if(idsLeft.Count == 0) {
 				idsLeft = new List<string>(clientIds);
 			}
+
+			currentWords.Add(newWord);
+
 		}
+
+		for (int i = 0; i < clientIds.Length; i++) {
+			SendWordDataToClient(clientIds[i]);
+		}
+
 	}
 
 	public void SendWordDataToClient(string clientId) {
