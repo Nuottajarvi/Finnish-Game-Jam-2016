@@ -7,7 +7,8 @@ public class WordActionGenerator : MonoBehaviour {
 
     //Get random action for a word
     public static WordAction GetWordAction() {
-        var v = WordAction.GetValues(typeof(WordAction));
-        return (WordAction)v.GetValue(new System.Random().Next(v.Length));
+		WordAction[] actions = System.Enum.GetValues(typeof(WordAction)) as WordAction[];
+
+		return actions[GameController.jamRandomer.Next(0, actions.Length)];
     }
 }

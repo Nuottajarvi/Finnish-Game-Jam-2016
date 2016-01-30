@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using SimpleJSON;
+using UnityEngine.SceneManagement;
 using System;
 
 public class ServerNetworker : MonoBehaviour {
@@ -51,9 +52,8 @@ public class ServerNetworker : MonoBehaviour {
 	}
 		
 	private void PlayerIn(JSONNode data){
-		//if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "lobby") return;
-
-		Debug.Log("player in");
+		// Only allow new players to connect in lobby
+		if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "lobby") return;
 
 		if(!connectedPlayers.Contains(data["id"]) && Application.loadedLevel != 0){
 			connectedPlayers.Add(data["id"]);
@@ -75,8 +75,7 @@ public class ServerNetworker : MonoBehaviour {
 	private void SetWordIn(JSONNode data){
 		JSONArray wordArray = data["words"].AsArray;
 
-		Debug.Log(data.ToString());
-
+		RitualHandler.Instance.OnNewAction(wordArray);
 		//TODO: Send to ritualhandler
 	}
 

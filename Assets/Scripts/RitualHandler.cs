@@ -36,12 +36,18 @@ public class RitualHandler {
     }
 
     public void NewRitual() {
-        int wordCount = random.Next(4, 8);
+		int wordCount = 4 + EnemySpawner.Instance.CurrentWave / 2;
 
         currentRitual = new string[wordCount];
 
         for(int i = 0; i < wordCount; i++) {
-            currentRitual[i] = WordGenerator.GetWord();
+			string word = WordGenerator.GetWord();
+
+			while(System.Array.IndexOf(currentRitual, word) >= 0) {
+				word = WordGenerator.GetWord();
+			}
+
+			currentRitual[i] = word;
         }
 
         GameUI.Instance.SetNewRitualText(currentRitual, string.Empty);
@@ -95,18 +101,22 @@ public class RitualHandler {
 	}
 
 	public void OnNewAction(JSONArray json) {
-		if(currentRitual[currentWordIndex] == json["word"]) {
-			currentWordIndex++;
+		for(int i = 0; i < json.Count; i++) {
+			if(json[i]["word"].Value.ToLower() == currentRitual[currentWordIndex].ToLower()) {
+				currentWordIndex++;
 
-			if(currentWordIndex >= currentRitual.Length) {
-				RitualComplete();
-				NewRitual();
+				if(currentWordIndex >= currentRitual.Length) {
+					RitualComplete();
+					NewRitual();
+				}
+
+				return;
 			}
-		} else {
-			currentWordIndex = 0;
-
-			GameUI.Instance.SetNewRitualText(currentRitual, "red");
 		}
+		
+		currentWordIndex = 0;
+
+		GameUI.Instance.SetNewRitualText(currentRitual, "red");
 	}
 
 	void RitualComplete() {

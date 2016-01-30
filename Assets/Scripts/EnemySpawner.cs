@@ -34,7 +34,7 @@ public class EnemySpawner : MonoBehaviour {
     Transform enemyParent;
 
     // Speed at easiest difficulty when game starts
-    const float StartMoveSpeed = 3.4f;
+    const float StartMoveSpeed = 1.0f;
 
     // How much move speed is increased each time
     const float MoveSpeedIncrease = 0.1f;

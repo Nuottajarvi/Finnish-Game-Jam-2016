@@ -14,6 +14,8 @@ public class GameController : MonoBehaviour {
         }
     }
 
+	public static System.Random jamRandomer;
+
 	Dictionary<string, List<Word>> wordsByClient;
 
     const int StartingHealth = 20;
@@ -25,14 +27,15 @@ public class GameController : MonoBehaviour {
     void Awake() {
         instance = this;
         Health = StartingHealth;
+
+		jamRandomer = new System.Random();
     }
 
 	// Use this for initialization
 	void Start () {
 		WordGenerator.CreateWordPool();
 		RitualHandler.Instance.DistributeWords();
-        RitualHandler.Instance.NewRitual();
-		
+        RitualHandler.Instance.NewRitual();	
 	}
 
 	// Update is called once per frame
