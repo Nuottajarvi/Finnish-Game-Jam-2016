@@ -55,6 +55,10 @@ public class GameUI : MonoBehaviour {
 		healthBar.fillAmount += amount;
 	}
 
+	public float GetHealthBarFill() {
+		return healthBar.fillAmount;
+	}
+
     public void SetNewRitualText(string[] words, string color) {
 		this.currentWords = words;
 
