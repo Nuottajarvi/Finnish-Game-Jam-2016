@@ -95,7 +95,6 @@ public class ClientNetworker : MonoBehaviour {
         data["words"] = arrayToSend;
 
         udpSend.Send(data);
-
     }
 
     //Set current words
