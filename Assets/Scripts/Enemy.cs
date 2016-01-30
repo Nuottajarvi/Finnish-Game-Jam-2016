@@ -6,8 +6,8 @@ public class Enemy : MonoBehaviour {
 
     Transform enemyTransform;
 
-    const int SpawnDistanceMin = 22;
-    const int SpawnDistanceMax = 25;
+    const int SpawnDistanceMin = 20;
+    const int SpawnDistanceMax = 22;
 
     public static int ActiveCount;
 
@@ -57,7 +57,7 @@ public class Enemy : MonoBehaviour {
                                           0f).normalized;
 
         spawnOffset *= spawnDistance;
-        spawnOffset.z = -3f;
+        spawnOffset.z = -5f;
         enemyTransform.Translate(spawnOffset);
 
         enemyTransform.Rotate(-Vector3.forward * (180 - spawnDirectionDeg));

@@ -22,8 +22,8 @@ public class EnemySpawner : MonoBehaviour {
 	GameObject destroyArea;
 
     // Time between spawning new enemy
-    float singleSpawnDeltaTime = 4f;
-    float waveSpawnDeltaTime = 5f;
+    float singleSpawnDeltaTime = 3f;
+    float waveSpawnDeltaTime = 4f;
 
     WaitForSeconds spawnWaitSingle;
     WaitForSeconds spawnWaitWave;
@@ -63,11 +63,10 @@ public class EnemySpawner : MonoBehaviour {
         StartCoroutine("SpawnRoutine");
 	}
 
-	void Update() {
-
-	}
-
     IEnumerator SpawnRoutine() {
+		CurrentWave = 0;
+		NextWave();
+
         while(spawning) {
             while(waveEnemiesLeft > 0) {
                 SpawnEnemy();
