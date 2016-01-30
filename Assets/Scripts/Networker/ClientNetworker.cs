@@ -78,11 +78,11 @@ public class ClientNetworker : MonoBehaviour {
         JSONArray arrayToSend = new JSONArray();
 
         //Get words that match performed action
-        for (int i = 0; i < uiPhoneScreenScript.words.Length; i++) {
-            if (uiPhoneScreenScript.wordActions[i] == action) {
+        for (int i = 0; i < uiPhoneScreenScript.words.Count; i++) {
+            if (uiPhoneScreenScript.words[i].action == action) {
 				JSONNode wordActionPair = new JSONClass();
-				wordActionPair["word"] = uiPhoneScreenScript.words[i];
-				wordActionPair["action"] = action.ToString();
+				wordActionPair["word"] = uiPhoneScreenScript.words[i].word;
+				wordActionPair["action"].AsInt = (int)uiPhoneScreenScript.words[i].action;
 
 				arrayToSend.Add(wordActionPair);
             }
@@ -110,6 +110,10 @@ public class ClientNetworker : MonoBehaviour {
 
 			wordsIn.Add(word);
 		}
+
+		UI_phonescreen_script uiPhoneScreenScript = GameObject.Find("UI_phonescreen").GetComponent<UI_phonescreen_script>();
+		uiPhoneScreenScript.words = wordsIn;
+
     }
 
 }
