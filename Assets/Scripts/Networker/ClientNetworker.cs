@@ -55,7 +55,11 @@ public class ClientNetworker : MonoBehaviour {
         //Get words that match performed action
         for (int i = 0; i < uiPhoneScreenScript.words.Length; i++) {
             if (uiPhoneScreenScript.wordActions[i] == action) {
-                arrayToSend.Add(uiPhoneScreenScript.words[i]);
+				JSONNode wordActionPair = new JSONClass();
+				wordActionPair["word"] = uiPhoneScreenScript.words[i];
+				wordActionPair["action"] = action.ToString();
+
+				arrayToSend.Add(wordActionPair);
             }
         }
 
