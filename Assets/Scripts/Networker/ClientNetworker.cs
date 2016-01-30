@@ -17,7 +17,7 @@ public class ClientNetworker : MonoBehaviour {
 
 	void Start(){
 		System.Random random = new System.Random();
-		id = random.Next(1000000);
+		id = random.Next(1000000).ToString();
 		Application.runInBackground = true;
 		udpReceive = GetComponent<UDPReceive>();
 		udpSend = GetComponent<UDPSend>();
@@ -98,22 +98,18 @@ public class ClientNetworker : MonoBehaviour {
 
     //Set current words
     public void SetWordIn(JSONNode data) {
+		List<Word> wordsIn = new List<Word>();
+		
+		JSONArray wordArray = data["words"].AsArray;
 
-        //Interpret the received results
-        string[] wordArray = data["word"].Value.Split(';');
-        string[] actionArray = data["wordAction"].Value.Split(';');
+		for(int i = 0; i < wordArray.Count; i++) {
+			Word word = new Word();
 
-        //get uiphonesscreen script where the word and actions are stored
-        UI_phonescreen_script uiPhoneScreenScript = GameObject.Find("UI_phonescreen").GetComponent<UI_phonescreen_script>();
-        uiPhoneScreenScript.words = wordArray;
+			word.action = (WordActionGenerator.WordAction)wordArray[i]["action"].AsInt;
+			word.word = wordArray[i]["word"];
 
-        WordActionGenerator.WordAction[] mappedActionArray = new WordActionGenerator.WordAction[actionArray.Length];
-        //Map received values to Enums
-        for (int i = 0; i < actionArray.Length; i++) {
-            mappedActionArray[i] = (WordActionGenerator.WordAction)Enum.Parse(typeof(WordActionGenerator.WordAction) , actionArray[i]);
-        }
-        uiPhoneScreenScript.wordActions = mappedActionArray;
-
+			wordsIn.Add(word);
+		}
     }
 
 }
