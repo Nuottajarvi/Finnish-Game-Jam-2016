@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 /// <summary>
 /// Singleton that controls the game state
@@ -12,6 +13,8 @@ public class GameController : MonoBehaviour {
             return instance;
         }
     }
+
+	Dictionary<string, List<Word>> wordsByClient;
 
     const int StartingHealth = 20;
 
@@ -26,9 +29,12 @@ public class GameController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		WordGenerator.CreateWordPool();
+		RitualHandler.Instance.DistributeWords();
         RitualHandler.Instance.NewRitual();
+		
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 	

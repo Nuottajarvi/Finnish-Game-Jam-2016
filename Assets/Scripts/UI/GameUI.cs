@@ -27,7 +27,7 @@ public class GameUI : MonoBehaviour {
             instance = this;
 
 		areaRitualTestButton.onClick.AddListener(() => {
-			Rituals.DestructionAreaRitual();
+			Rituals.CompleteRitual();
 		});
     }
 
@@ -38,6 +38,10 @@ public class GameUI : MonoBehaviour {
     public void SetHealthBarFill(float fill) {
         healthBar.fillAmount = fill;
     }
+
+	public void IncreaseHealthBarFill(float amount) {
+		healthBar.fillAmount += amount;
+	}
 
     public void SetNewRitualText(string[] words, string color) {
         string ritualString = string.Empty;

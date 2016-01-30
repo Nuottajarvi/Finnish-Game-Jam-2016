@@ -71,6 +71,8 @@ public class ClientNetworker : MonoBehaviour {
 
     //Send completed action
     public void WordOut(WordActionGenerator.WordAction action) {
+		Debug.LogWarning(action.ToString() + " out");
+
         JSONNode data = new JSONClass();
 
         //Get script containing words and actions

@@ -51,6 +51,10 @@ public class ServerNetworker : MonoBehaviour {
 	}
 		
 	private void PlayerIn(JSONNode data){
+		//if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "lobby") return;
+
+		Debug.Log("player in");
+
 		if(!connectedPlayers.Contains(data["id"]) && Application.loadedLevel != 0){
 			connectedPlayers.Add(data["id"]);
 			LobbyController lc = GameObject.Find("LobbyPanel").GetComponent<LobbyController>();
@@ -70,6 +74,8 @@ public class ServerNetworker : MonoBehaviour {
 	//Function to read incoming action and see if it corresponds to currently active word in the sentence
 	private void SetWordIn(JSONNode data){
 		JSONArray wordArray = data["words"].AsArray;
+
+		Debug.Log(data.ToString());
 
 		//TODO: Send to ritualhandler
 	}

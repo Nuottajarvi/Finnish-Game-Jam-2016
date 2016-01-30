@@ -2,8 +2,10 @@
 using System.Collections;
 
 public class Enemy : MonoBehaviour {
-    static Transform summoningCircle;
+	public enum Type { Normal, Boss }
+	[SerializeField] public Type type;
 
+    static Transform summoningCircle;
     Transform enemyTransform;
 
     const int SpawnDistanceMin = 20;
@@ -45,8 +47,16 @@ public class Enemy : MonoBehaviour {
     void ChooseSpawnPosition() {
         System.Random rand = new System.Random();
 
-        float spawnDirectionRad = (float)rand.NextDouble() * 2 * Mathf.PI;
-        float spawnDirectionDeg = (spawnDirectionRad / (2 * Mathf.PI)) * 360;
+		float spawnDirectionRad;
+		float spawnDirectionDeg;
+
+		if(type == Type.Normal) {
+			spawnDirectionRad = (float)rand.NextDouble() * 2 * Mathf.PI;
+			spawnDirectionDeg = (spawnDirectionRad / (2 * Mathf.PI)) * 360;
+		} else {
+			spawnDirectionRad = 0;
+			spawnDirectionDeg = 0;
+		}
 
         int spawnDistance = rand.Next(SpawnDistanceMin, SpawnDistanceMax);
 
