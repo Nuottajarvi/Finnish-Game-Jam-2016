@@ -17,14 +17,18 @@ public class ServerNetworker : MonoBehaviour {
 	UDPReceive udpReceive;
 	UDPSend udpSend;
 
-	List<string> connectedPlayers;
+	public List<string> connectedPlayers;
 
 	void Awake() {
-		if(instance == null)
+		if (instance == null)
 			instance = this;
+		else
+			Destroy(this.gameObject);
 	}
 
 	void Start(){
+
+		DontDestroyOnLoad(this.gameObject);
 
 		connectedPlayers = new List<string>();
 		Application.runInBackground = true;
@@ -47,7 +51,7 @@ public class ServerNetworker : MonoBehaviour {
 	}
 		
 	private void PlayerIn(JSONNode data){
-		if(!connectedPlayers.Contains(data["id"])){
+		if(!connectedPlayers.Contains(data["id"]) && Application.loadedLevel != 0){
 			connectedPlayers.Add(data["id"]);
 			LobbyController lc = GameObject.Find("LobbyPanel").GetComponent<LobbyController>();
 			lc.AddPlayer(data["id"]);
