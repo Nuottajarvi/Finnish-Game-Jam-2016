@@ -14,9 +14,6 @@ public class EnemySpawner : MonoBehaviour {
 
     List<Enemy> enemies;
 
-    [SerializeField]
-    public Text waveText;
-
     public int CurrentWave {
         get; private set;
     }
@@ -89,7 +86,7 @@ public class EnemySpawner : MonoBehaviour {
 
     void NextWave() {
         CurrentWave++;
-        waveText.text = "Wave: " + CurrentWave.ToString();
+        GameUI.Instance.SetWaveText(CurrentWave);
 
         IncreaseMoveSpeed();
 

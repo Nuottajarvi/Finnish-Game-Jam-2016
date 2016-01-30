@@ -13,9 +13,6 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    [SerializeField]
-    Image healthBar;
-
     const int StartingHealth = 20;
 
     public int Health {
@@ -29,7 +26,7 @@ public class GameController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+        RitualHandler.Instance.NewRitual();
 	}
 	
 	// Update is called once per frame
@@ -44,7 +41,7 @@ public class GameController : MonoBehaviour {
             LoseGame();
         }
 
-        healthBar.fillAmount = (float)Health / (float)StartingHealth;
+        GameUI.Instance.SetHealthBarFill((float)Health / (float)StartingHealth);
      }
 
     void LoseGame() {
