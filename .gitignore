@@ -29,3 +29,5 @@ sysinfo.txt
 
 /Server/node_modules/
 /Assets/SocketIO/
+
+/ProjectSettings/
