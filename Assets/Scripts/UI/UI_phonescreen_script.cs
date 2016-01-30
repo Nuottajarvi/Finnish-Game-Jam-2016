@@ -19,9 +19,11 @@ public class UI_phonescreen_script : MonoBehaviour {
         //Empty text
         wordList.text = "";
 
-        //Set text with all the contents from the lists
-        for (int i = 0; i < words.Count; i++) {
-            wordList.text = wordList.text + "\n<b>" + words[i].word + "</b>\n" + words[i].action + "\n";
-        }
+		if(words != null && words.Count > 0) {
+			//Set text with all the contents from the lists
+			for(int i = 0; i < words.Count; i++) {
+				wordList.text = wordList.text + "\n<b>" + words[i].word + "</b>\n" + words[i].action + "\n";
+			}
+		}
 	}
 }
