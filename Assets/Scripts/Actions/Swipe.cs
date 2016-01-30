@@ -14,9 +14,13 @@ public class Swipe : PhoneAction {
 
 		sendTimer = sendTimer + Time.deltaTime;
 
+		if (Input.GetMouseButtonUp(1))
+		{
+			clientNetworker.WordOut(WordActionGenerator.WordAction.Swipe);
+		}
 
-        //A swipe that doesn't move enough is considered as a tap on screen
-        if (Input.touchCount > 0)
+		//A swipe that doesn't move enough is considered as a tap on screen
+		if (Input.touchCount > 0)
         {
             //Use the first swipe
             Touch touch = Input.touches[0];

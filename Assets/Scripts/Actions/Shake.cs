@@ -92,5 +92,9 @@ public class Shake : PhoneAction {
 			sendTimer = 0;
 		}
 
+		if (Input.GetKeyUp("space")) {
+			clientNetworker.WordOut(WordActionGenerator.WordAction.Shake);
+		}
+
 	}
 }
