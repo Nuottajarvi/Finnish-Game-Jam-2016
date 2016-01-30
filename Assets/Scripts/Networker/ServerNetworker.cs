@@ -26,14 +26,17 @@ public class ServerNetworker : MonoBehaviour {
 
 			switch(values["function"].Value){
 				case "move": MoveIn(values); break;
+                case "wordOut": SetWordIn(values); break;
 			}
 		}
 	}
 
-    private void SetWordActionIn(JSONNode data)
+    //Function to read incoming action and see if it corresponds to currently active word in the sentence
+    private void SetWordIn(JSONNode data)
     {
+        JSONArray wordArray = data["words"].AsArray;
 
-
+        //TODO: Send to ritualhandler
     }
 
 	private void MoveIn(JSONNode data){

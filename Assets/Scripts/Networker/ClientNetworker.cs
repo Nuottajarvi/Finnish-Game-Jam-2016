@@ -45,11 +45,22 @@ public class ClientNetworker : MonoBehaviour {
 	}
 
     //Send completed action
-    public void WordActionOut(WordActionGenerator.WordAction action) {
+    public void WordOut(WordActionGenerator.WordAction action) {
         JSONNode data = new JSONClass();
 
-        data["function"] = "wordActionOut";
-        data["wordAction"] = action.ToString();
+        //Get script containing words and actions
+        UI_phonescreen_script uiPhoneScreenScript = GameObject.Find("UI_phonescreen").GetComponent<UI_phonescreen_script>();
+        JSONArray arrayToSend = new JSONArray();
+
+        //Get words that match performed action
+        for (int i = 0; i < uiPhoneScreenScript.words.Length; i++) {
+            if (uiPhoneScreenScript.wordActions[i] == action) {
+                arrayToSend.Add(uiPhoneScreenScript.words[i]);
+            }
+        }
+
+        data["function"] = "wordOut";
+        data["words"] = arrayToSend;
 
         udpSend.Send(data);
 
