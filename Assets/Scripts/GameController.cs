@@ -40,7 +40,13 @@ public class GameController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-	
+		GameUI.Instance.IncreaseHealthBarFill(Time.deltaTime * 0.01f);
+
+		if(EnemySpawner.Instance.IsBossWave) {
+			if(GameUI.Instance.GetHealthBarFill() >= 1.0f) {
+				EnemySpawner.Instance.KillBoss();
+			}
+		}
 	}
 
     public void ReduceHealth() {

@@ -197,6 +197,15 @@ public class EnemySpawner : MonoBehaviour {
 		// TODO: Push all enemies away from circle
 	}
 
+	public void KillBoss() {
+		foreach(Enemy enemy in enemies) {
+			if(enemy.type == Enemy.Type.Boss) {
+				enemy.gameObject.SetActive(false);
+				return;
+			}
+		}
+	}
+
 	public void RestoreSpeeds() {
 		foreach(Enemy enemy in enemies) {
 			enemy.MoveSpeed = currentMoveSpeed;

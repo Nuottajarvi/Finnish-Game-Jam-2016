@@ -55,10 +55,17 @@ public class GameUI : MonoBehaviour {
 		healthBar.fillAmount += amount;
 	}
 
+	public float GetHealthBarFill() {
+		return healthBar.fillAmount;
+	}
+
     public void SetNewRitualText(string[] words, string color) {
 		this.currentWords = words;
+		string ritualString = string.Empty;
 
-		string ritualString = color;
+		if(color.Length > 0) {
+			ritualString += "<color=" + color + ">";
+		}
 
         for(int i = 0; i < words.Length; i++) {
 			ritualString += words[i];
