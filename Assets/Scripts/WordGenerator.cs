@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class WordGenerator : MonoBehaviour {
+public class WordGenerator {
 
     //List of individual words
     private static List<string> wordList = new List<string>() { "vitae", "sit", "suscipit", "nibh", "penatibus", "porttitor", "bibendum", "est", "Etiam", "tortor", "cubilia", "viverra", "nisi", "pulvinar", "nisl", "dictumstAenean", "ullamcorper", "luctus", "condimentum", "pharetra", "odioCurabitur", "odio", "habitasse", "consectetur", "montes", "dapibus", "enim", "diam", "commodo", "malesuada", "felis", "justo", "Nulla", "Aenean", "nunc", "sollicitudin", "primis", "iaculis", "placerat", "tristique", "eros", "lobortis", "ridiculus", "eleifend", "velit", "dolorProin", "Fusce", "lorem", "turpis", "faucibus", "Nullam", "Vestibulum", "Cras", "ipsum", "Phasellus", "dolor", "amet", "accumsan", "Integer", "Cum", "rhoncus", "accumsanProin", "fringilla", "aliquam", "feugiat", "Pellentesque", "augue", "musCurabitur", "orci", "nuncMaecenas", "Donec", "erat", "ante", "Mauris", "lectus", "molestie", "massa", "gravida", "vestibulum", "nec", "congue", "natoque", "quis", "leo", "quam", "mattis", "magna", "nequeUt", "Sed", "tempus", "maximus", "laoreet", "cursus", "acVestibulum", "pellentesque", "magnis", "parturient", "sapien", "dignissim", "mollis", "eget", "sodales", "Maecenas", "dui", "ultricies", "fermentumNullam", "interdum", "quisProin", "aliquamSed", "mauris", "blandit", "imperdiet", "tellus", "vehicula", "elementum", "dictum", "elit", "sem", "efficitur", "posuere", "ornare", "tincidunt", "sed", "sagittis", "vel", "Curae;", "hac", "libero", "pretium", "dis", "arcu", "auctor", "Vivamus", "facilisis", "pellentesqueProin", "non", "fermentum", "risus", "nulla", "aliquet", "Lorem", "aProin", "Proin", "lacinia", "sociis", "varius", "metus", "ultrices", "Praesent", "volutpat", "platea", "viverraIn", "ultriciesDuis", "tempor", "risusFusce", "idPraesent", "adipiscing", "vulputate", "nascetur", "porta", "consequat", "convallis", "facilisisAenean", "egestas", "rutrum", "Nunc", "venenatis" };
@@ -9,10 +9,11 @@ public class WordGenerator : MonoBehaviour {
     //This is a list of words that have been returned already
     private static List<string> wordsInPlay = new List<string>();
 
+    static System.Random rand = new System.Random();
+
     //Get random word from the list
     public static string GetWord() {
         //Get random word
-        System.Random rand = new System.Random();
         string wordToReturn = wordList[rand.Next(0, wordList.Count)];
 
         //Add word to an array of already returned words. Consider removing from first list
