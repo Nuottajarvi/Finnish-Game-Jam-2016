@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using SimpleJSON;
 
 public class RitualHandler {
     static RitualHandler instance;
@@ -12,18 +13,21 @@ public class RitualHandler {
         }
     }
 
-
     System.Random random;
 
     static string[] currentRitual;
     public static string[] CurrentRitual {
-        get { return currentRitual; }
+        get {
+			return currentRitual;
+		}
     }
+
+	// Which part of the ritual is the current action
+	int currentWordIndex;
 
     private RitualHandler() {
         random = new System.Random();
     }
-
 
     public void NewRitual() {
         int wordCount = random.Next(4, 8);
@@ -34,6 +38,25 @@ public class RitualHandler {
             currentRitual[i] = WordGenerator.GetWord();
         }
 
-        GameUI.Instance.SetNewRitualText(currentRitual);
+        GameUI.Instance.SetNewRitualText(currentRitual, string.Empty);
     }
+
+	public void OnNewAction(JSONArray json) {
+		if(currentRitual[currentWordIndex] == json["word"]) {
+			currentWordIndex++;
+
+			if(currentWordIndex >= currentRitual.Length) {
+				RitualComplete();
+				NewRitual();
+			}
+		} else {
+			currentWordIndex = 0;
+
+			GameUI.Instance.SetNewRitualText(currentRitual, "red");
+		}
+	}
+
+	void RitualComplete() {
+		EnemySpawner.Instance.DestructionRitual();
+	}
 }

@@ -15,6 +15,13 @@ public class Enemy : MonoBehaviour {
     // when enemy has 'won'
     const float PlayerReachDistance = 5f;
 
+	float distanceToCircle;
+	public float DistanceToCircle {
+		get {
+			return distanceToCircle;
+		}
+	}
+
     // Current move speed
     public float MoveSpeed {
         get; set;
@@ -53,10 +60,6 @@ public class Enemy : MonoBehaviour {
         spawnOffset.z = -3f;
         enemyTransform.Translate(spawnOffset);
 
-        Vector3 rotationTarget = new Vector3(summoningCircle.position.x,
-                                             summoningCircle.position.y,
-                                             enemyTransform.position.z);
-
         enemyTransform.Rotate(-Vector3.forward * (180 - spawnDirectionDeg));
 
         GetComponent<SpriteRenderer>().flipY = enemyTransform.position.x > 0;
@@ -67,7 +70,7 @@ public class Enemy : MonoBehaviour {
         Vector3 targetDir = summoningCircle.position - enemyTransform.position;
         targetDir.z = 0;
 
-        float distanceToCircle = targetDir.magnitude;
+        distanceToCircle = targetDir.magnitude;
 
         if(distanceToCircle <= PlayerReachDistance) {
             ReachedCircle();
@@ -76,8 +79,6 @@ public class Enemy : MonoBehaviour {
         targetDir = targetDir.normalized;
 
         enemyTransform.position += targetDir * MoveSpeed * Time.deltaTime;
-
-        //enemyTransform.Translate(targetDir * MoveSpeed * Time.deltaTime);
 	}
 
     void ReachedCircle() {

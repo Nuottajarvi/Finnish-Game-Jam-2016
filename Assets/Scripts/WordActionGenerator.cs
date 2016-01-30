@@ -9,6 +9,5 @@ public class WordActionGenerator : MonoBehaviour {
     public static WordAction getWordAction() {
         var v = WordAction.GetValues(typeof(WordAction));
         return (WordAction)v.GetValue(new System.Random().Next(v.Length));
-
     }
 }

@@ -42,16 +42,20 @@ public class GameUI : MonoBehaviour {
         healthBar.fillAmount = fill;
     }
 
-    public void SetNewRitualText(string[] words) {
+    public void SetNewRitualText(string[] words, string color) {
         string ritualString = string.Empty;
 
         for(int i = 0; i < words.Length; i++) {
-            if(i < words.Length - 1) {
-                ritualString += words[i] + " ";
-            } else {
-                ritualString += words[i];
-            }
+			// Start of rich text color tag <color=red> </color>
+			string colorStartString = string.Empty;
 
+			ritualString += colorStartString + words[i];
+
+			if(colorStartString.Length > 0) {
+				ritualString += "</color>";
+			}
+
+			if(i < words.Length - 1) ritualString += " ";
         }
 
         ritualText.text = ritualString;
