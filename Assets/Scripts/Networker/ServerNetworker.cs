@@ -64,10 +64,10 @@ public class ServerNetworker : MonoBehaviour {
 		ConfirmConnectionOut(data["id"]);
 	}
 
-	private void ConfirmConnectionOut(JSONNode dataIn){
+	private void ConfirmConnectionOut(string id){
 		JSONNode data = new JSONClass();
 		data["function"] = "Confirm";
-		data["id"] = dataIn["id"];
+		data["id"] = id;
 
 		udpSend.Send(data);
 	}

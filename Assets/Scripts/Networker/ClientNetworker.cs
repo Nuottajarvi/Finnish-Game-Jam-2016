@@ -30,7 +30,7 @@ public class ClientNetworker : MonoBehaviour {
 		foreach(string UDPPacket in UDPPackets){
 			var values = JSON.Parse(UDPPacket);
 
-			if(values["id"] == id){
+			if(values["id"].Value == id){
 				switch(values["function"].Value){
 					case "Confirm": ConfirmIn(values); break;
 			        	case "SendWord": SetWordIn(values); break;
