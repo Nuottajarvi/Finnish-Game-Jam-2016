@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 /// <summary>
 /// Singleton that controls the game state
@@ -13,6 +14,10 @@ public class GameController : MonoBehaviour {
         }
     }
 
+	public static System.Random jamRandomer;
+
+	Dictionary<string, List<Word>> wordsByClient;
+
     const int StartingHealth = 20;
 
     public int Health {
@@ -22,13 +27,17 @@ public class GameController : MonoBehaviour {
     void Awake() {
         instance = this;
         Health = StartingHealth;
+
+		jamRandomer = new System.Random();
     }
 
 	// Use this for initialization
 	void Start () {
-        RitualHandler.Instance.NewRitual();
+		WordGenerator.CreateWordPool();
+		RitualHandler.Instance.DistributeWords();
+        RitualHandler.Instance.NewRitual();	
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 	

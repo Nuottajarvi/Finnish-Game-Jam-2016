@@ -13,4 +13,14 @@ public class Rituals {
 	public static void PushbackRitual() {
 		EnemySpawner.Instance.Pushback();
 	}
+
+	public static void CompleteRitual() {
+		if(EnemySpawner.Instance.IsBossWave) {
+			PushbackRitual();
+		} else {
+			DestructionAreaRitual();
+		}
+
+		RitualHandler.Instance.NewRitual();
+	}
 }

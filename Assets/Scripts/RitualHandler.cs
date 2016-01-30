@@ -28,64 +28,66 @@ public class RitualHandler {
 	// Which part of the ritual is the current action
 	int currentWordIndex;
 
+	Dictionary<string, List<Word>> wordsByClient;
+
     private RitualHandler() {
         random = new System.Random();
 		currentWords = new List<Word>();
     }
 
     public void NewRitual() {
-        int wordCount = random.Next(4, 8);
+		int wordCount = 4 + EnemySpawner.Instance.CurrentWave / 2;
 
         currentRitual = new string[wordCount];
 
         for(int i = 0; i < wordCount; i++) {
-            currentRitual[i] = WordGenerator.GetWord();
+			string word = WordGenerator.GetWord();
+
+			while(System.Array.IndexOf(currentRitual, word) >= 0) {
+				word = WordGenerator.GetWord();
+			}
+
+			currentRitual[i] = word;
         }
 
         GameUI.Instance.SetNewRitualText(currentRitual, string.Empty);
-
-		DistributeWords();
     }
 
-	void DistributeWords() {
-		// TODO: Get client ids
-		Debug.Log("Distributing words");
-		string[] clientIds = /*new string[] { "2", "5", "6", "7" }*/ ServerNetworker.Instance.connectedPlayers.ToArray();
+	public void DistributeWords() {
+		wordsByClient = new Dictionary<string, List<Word>>();
 
-		currentWords.Clear();
+		List<string> clientIds = ServerNetworker.Instance.connectedPlayers;
 
-		List<string> idsLeft = /*new List<string>(clientIds)*/ ServerNetworker.Instance.connectedPlayers;
+		if(clientIds.Count == 0) return;
 
-		WordActionGenerator.WordAction[] possibleActions = System.Enum.GetValues(typeof(WordActionGenerator.WordAction)) as WordActionGenerator.WordAction[];
-
-		for(int i = 0; i < currentRitual.Length; i++) {
-			Word newWord = new Word();
-
-			newWord.word = currentRitual[i];
-			newWord.action = WordActionGenerator.GetWordAction();
-
-			string chosenId = idsLeft[random.Next(0, idsLeft.Count)];
-
-			newWord.clientId = chosenId;
-
-			idsLeft.Remove(chosenId);
-
-			if(idsLeft.Count == 0) {
-				idsLeft = new List<string>(clientIds);
-			}
-
-			currentWords.Add(newWord);
-
+		for(int i = 0; i < clientIds.Count; i++) {
+			wordsByClient[clientIds[i]] = new List<Word>();
 		}
 
-		for (int i = 0; i < clientIds.Length; i++) {
-			SendWordDataToClient(clientIds[i]);
+		System.Random rand = new System.Random();
+
+		List<string> wordPool = new List<string>(WordGenerator.CurrentWordPool);
+		
+
+		while(wordPool.Count > 0) {
+			Word word = new Word();
+
+			word.word = wordPool[rand.Next(0, wordPool.Count)];
+			word.action = WordActionGenerator.GetWordAction();
+			word.clientId = clientIds[wordPool.Count % clientIds.Count];
+
+			wordsByClient[word.clientId].Add(word);
+
+			wordPool.Remove(word.word);
 		}
 
+		foreach(KeyValuePair<string, List<Word>> pair in wordsByClient) {
+			SendWordDataToClient(pair.Key, pair.Value);
+		}
 	}
 
-	public void SendWordDataToClient(string clientId) {
-		List<Word> wordsToSend = new List<Word>();
+	public void SendWordDataToClient(string clientId, List<Word> wordsToSend) {
+		Debug.Log("Send word data to " + clientId);
 
 		for(int i = 0; i < currentWords.Count; i++) {
 			Word word = currentWords[i];
@@ -99,18 +101,22 @@ public class RitualHandler {
 	}
 
 	public void OnNewAction(JSONArray json) {
-		if(currentRitual[currentWordIndex] == json["word"]) {
-			currentWordIndex++;
+		for(int i = 0; i < json.Count; i++) {
+			if(json[i]["word"].Value.ToLower() == currentRitual[currentWordIndex].ToLower()) {
+				currentWordIndex++;
 
-			if(currentWordIndex >= currentRitual.Length) {
-				RitualComplete();
-				NewRitual();
+				if(currentWordIndex >= currentRitual.Length) {
+					RitualComplete();
+					NewRitual();
+				}
+
+				return;
 			}
-		} else {
-			currentWordIndex = 0;
-
-			GameUI.Instance.SetNewRitualText(currentRitual, "red");
 		}
+		
+		currentWordIndex = 0;
+
+		GameUI.Instance.SetNewRitualText(currentRitual, "red");
 	}
 
 	void RitualComplete() {

@@ -9,10 +9,10 @@ public class UI_phonescreen_script : MonoBehaviour {
 	//public WordActionGenerator.WordAction[] wordActions; 
 	public List<Word> words;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
+	[SerializeField]
+	Text logText;
+
+	string logString;
 	
 	// Update is called once per frame
 	void Update () {
@@ -25,5 +25,17 @@ public class UI_phonescreen_script : MonoBehaviour {
 				wordList.text = wordList.text + "\n<b>" + words[i].word + "</b>\n" + words[i].action + "\n";
 			}
 		}
+	}
+
+	void OnEnable() {
+		Application.logMessageReceived += OnLog;
+	}
+
+	void OnLog(string condition, string stackTrace, LogType logType) {
+		if(logType == LogType.Log) return;
+
+		logString += "\n" + condition;
+
+		logText.text = logString;
 	}
 }
