@@ -106,6 +106,7 @@ public class RitualHandler {
 				currentWordIndex++;
 
 				if(currentWordIndex >= currentRitual.Length) {
+					currentWordIndex = 0;
 					RitualComplete();
 					NewRitual();
 				}
