@@ -63,7 +63,8 @@ public class ClientNetworker : MonoBehaviour {
             }
         }
 
-        data["function"] = "wordOut";
+		data["id"] = id;
+		data["function"] = "wordOut";
         data["words"] = arrayToSend;
 
         udpSend.Send(data);
