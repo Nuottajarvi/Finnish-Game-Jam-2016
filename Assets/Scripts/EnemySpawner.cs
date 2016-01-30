@@ -18,6 +18,10 @@ public class EnemySpawner : MonoBehaviour {
         get; private set;
     }
 
+	[SerializeField]
+	GameObject destroyArea;
+	Material destroyAreaMaterial;
+
     // Time between spawning new enemy
     float singleSpawnDeltaTime = 4f;
     float waveSpawnDeltaTime = 5f;
@@ -41,13 +45,11 @@ public class EnemySpawner : MonoBehaviour {
 
     float currentMoveSpeed;
 
-    const float DifficultyIncreaseDeltaTime = 15f;
-    float lastDifficultyIncreaseTime;
-
     void Awake() {
         instance = this;
 
         currentMoveSpeed = StartMoveSpeed;
+		destroyAreaMaterial = destroyArea.GetComponent<MeshRenderer>().materials[0];
     }
 
 	// Use this for initialization
@@ -63,9 +65,20 @@ public class EnemySpawner : MonoBehaviour {
         StartCoroutine("SpawnRoutine");
 	}
 
-    IEnumerator SpawnRoutine() {
-        lastDifficultyIncreaseTime = Time.time;
+	void Update() {
+		if(destroyAreaMaterial.color.a > 0f) {
+			Color ogColor = destroyAreaMaterial.color;
 
+			ogColor.a -= 0.666f * Time.deltaTime;
+			ogColor.a = Mathf.Max(0, ogColor.a);
+
+			destroyAreaMaterial.color = ogColor;
+
+			DestroyNearbyEnemies();
+		}
+	}
+
+    IEnumerator SpawnRoutine() {
         while(spawning) {
             while(waveEnemiesLeft > 0) {
                 SpawnEnemy();
@@ -128,4 +141,23 @@ public class EnemySpawner : MonoBehaviour {
 
         currentMoveSpeed = Mathf.Min(currentMoveSpeed, MaxMoveSpeed);
     }
+
+	public void DestructionRitual() {
+		destroyArea.SetActive(true);
+
+		Color ogColor = destroyAreaMaterial.color;
+		ogColor.a = 1f;
+
+		destroyAreaMaterial.color = ogColor;
+	}
+
+	public void DestroyNearbyEnemies() {
+		float radius = 13f;
+
+		for(int i = 0; i < enemies.Count; i++) {
+			if(enemies[i].DistanceToCircle <= radius) {
+				enemies[i].gameObject.SetActive(false);
+			}
+		}
+	}
 }
