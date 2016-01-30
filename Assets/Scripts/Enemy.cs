@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour {
 
     // How far away enemy has to be to center of summoning circle
     // when enemy has 'won'
-    const float PlayerReachDistance = 5f;
+    const float PlayerReachDistance = 2f;
 
 	float distanceToCircle;
 	public float DistanceToCircle {

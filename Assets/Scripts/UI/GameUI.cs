@@ -19,20 +19,17 @@ public class GameUI : MonoBehaviour {
     [SerializeField]
     Image healthBar;
 
+	[SerializeField]
+	Button areaRitualTestButton;
+
     void Awake() {
         if(instance == null)
             instance = this;
-    }
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+		areaRitualTestButton.onClick.AddListener(() => {
+			Rituals.DestructionAreaRitual();
+		});
+    }
 
     public void SetWaveText(int wave) {
         waveText.text = "Wave " + wave.ToString();

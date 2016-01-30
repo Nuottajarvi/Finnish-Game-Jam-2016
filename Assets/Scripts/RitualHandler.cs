@@ -105,6 +105,6 @@ public class RitualHandler {
 	}
 
 	void RitualComplete() {
-		EnemySpawner.Instance.DestructionRitual();
+		Rituals.DestructionAreaRitual();
 	}
 }

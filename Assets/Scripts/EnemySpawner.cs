@@ -20,7 +20,6 @@ public class EnemySpawner : MonoBehaviour {
 
 	[SerializeField]
 	GameObject destroyArea;
-	Material destroyAreaMaterial;
 
     // Time between spawning new enemy
     float singleSpawnDeltaTime = 4f;
@@ -35,7 +34,7 @@ public class EnemySpawner : MonoBehaviour {
     Transform enemyParent;
 
     // Speed at easiest difficulty when game starts
-    const float StartMoveSpeed = 0.9f;
+    const float StartMoveSpeed = 1.9f;
 
     // How much move speed is increased each time
     const float MoveSpeedIncrease = 0.1f;
@@ -49,7 +48,6 @@ public class EnemySpawner : MonoBehaviour {
         instance = this;
 
         currentMoveSpeed = StartMoveSpeed;
-		destroyAreaMaterial = destroyArea.GetComponent<MeshRenderer>().materials[0];
     }
 
 	// Use this for initialization
@@ -66,16 +64,7 @@ public class EnemySpawner : MonoBehaviour {
 	}
 
 	void Update() {
-		if(destroyAreaMaterial.color.a > 0f) {
-			Color ogColor = destroyAreaMaterial.color;
 
-			ogColor.a -= 0.666f * Time.deltaTime;
-			ogColor.a = Mathf.Max(0, ogColor.a);
-
-			destroyAreaMaterial.color = ogColor;
-
-			DestroyNearbyEnemies();
-		}
 	}
 
     IEnumerator SpawnRoutine() {
@@ -142,22 +131,13 @@ public class EnemySpawner : MonoBehaviour {
         currentMoveSpeed = Mathf.Min(currentMoveSpeed, MaxMoveSpeed);
     }
 
-	public void DestructionRitual() {
-		destroyArea.SetActive(true);
-
-		Color ogColor = destroyAreaMaterial.color;
-		ogColor.a = 1f;
-
-		destroyAreaMaterial.color = ogColor;
+	public void DestroyAllEnemies() {
+		foreach(Enemy e in enemies) {
+			e.gameObject.SetActive(false);
+		}
 	}
 
-	public void DestroyNearbyEnemies() {
-		float radius = 13f;
-
-		for(int i = 0; i < enemies.Count; i++) {
-			if(enemies[i].DistanceToCircle <= radius) {
-				enemies[i].gameObject.SetActive(false);
-			}
-		}
+	public void Pushback() {
+		// TODO: Push all enemies away from circle
 	}
 }

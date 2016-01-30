@@ -41,6 +41,7 @@ public class GameController : MonoBehaviour {
             LoseGame();
         }
 
+
         GameUI.Instance.SetHealthBarFill((float)Health / (float)StartingHealth);
      }
 
