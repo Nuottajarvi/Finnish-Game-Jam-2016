@@ -13,4 +13,11 @@ public class LobbyController : MonoBehaviour {
 		Text text = instantiatedPlayer.transform.GetChild(0).GetComponent<Text>();
 		text.text = name;
 	}
+
+	public void StartGame()
+	{
+		Application.LoadLevel("game");
+
+	}
+
 }

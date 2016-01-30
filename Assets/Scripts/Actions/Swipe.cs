@@ -3,8 +3,18 @@ using System.Collections;
 
 public class Swipe : PhoneAction {
 
+	// Use this for initialization
+	void Start()
+	{
+		sendTimer = 0.0f;
+	}
+
 	// Update is called once per frame
 	void Update () {
+
+		sendTimer = sendTimer + Time.deltaTime;
+
+
         //A swipe that doesn't move enough is considered as a tap on screen
         if (Input.touchCount > 0)
         {
@@ -22,8 +32,13 @@ public class Swipe : PhoneAction {
                     float swipeDist = (new Vector3(touch.position.x, touch.position.y, 0) - new Vector3(startPos.x, startPos.y, 0)).magnitude;
                     if (swipeDist > swipeTreshold)
                     {
-                        //SEND SWIPE
-                        clientNetworker.WordOut(WordActionGenerator.WordAction.Swipe);
+						//SEND SWIPE
+						if (sendTimer > sendLimit)
+						{
+							sendTimer = 0;
+							clientNetworker.WordOut(WordActionGenerator.WordAction.Swipe);
+						}
+                        
                     }
                     break;
             }
