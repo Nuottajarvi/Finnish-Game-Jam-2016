@@ -1,7 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< 894308426485365e28425e4e9290e39e9bea32f7
 guid: 08177443f7874fe4d8aaaf8c4f6fe538
 timeCreated: 1454155475
 licenseType: Pro
+=======
+guid: 1cf1ddb5b5452dc429f134dcb5f7fbaa
+timeCreated: 1454157702
+licenseType: Free
+>>>>>>> sprite editing
 TextureImporter:
   fileIDToRecycleName: {}
   serializedVersion: 2
