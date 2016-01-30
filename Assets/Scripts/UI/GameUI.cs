@@ -22,6 +22,10 @@ public class GameUI : MonoBehaviour {
 	[SerializeField]
 	Button areaRitualTestButton;
 
+	string[] currentWords;
+
+	float redFlashTime;
+
     void Awake() {
         if(instance == null)
             instance = this;
@@ -30,6 +34,14 @@ public class GameUI : MonoBehaviour {
 			Rituals.CompleteRitual();
 		});
     }
+
+	void Update() {
+		if(redFlashTime > 0f && Time.time - redFlashTime > 0.5f) {
+			redFlashTime = 0f;
+
+			SetNewRitualText(currentWords, string.Empty);
+		}
+	}
 
     public void SetWaveText(int wave) {
         waveText.text = "Wave " + wave.ToString();
@@ -44,21 +56,24 @@ public class GameUI : MonoBehaviour {
 	}
 
     public void SetNewRitualText(string[] words, string color) {
-        string ritualString = string.Empty;
+		this.currentWords = words;
+
+		string ritualString = color;
 
         for(int i = 0; i < words.Length; i++) {
-			// Start of rich text color tag <color=red> </color>
-			string colorStartString = string.Empty;
-
-			ritualString += colorStartString + words[i];
-
-			if(colorStartString.Length > 0) {
-				ritualString += "</color>";
-			}
+			ritualString += words[i];
 
 			if(i < words.Length - 1) ritualString += " ";
         }
 
+		if(color.Length > 0) {
+			ritualString += "</color>";
+		}
+
         ritualText.text = ritualString;
     }
+
+	public void FlashRitualText(string color) {
+		SetNewRitualText(currentWords, color);
+	}
 }

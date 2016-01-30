@@ -117,7 +117,7 @@ public class RitualHandler {
 		
 		currentWordIndex = 0;
 
-		GameUI.Instance.SetNewRitualText(currentRitual, "red");
+		GameUI.Instance.FlashRitualText("red");
 	}
 
 	void RitualComplete() {
