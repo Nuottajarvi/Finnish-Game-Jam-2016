@@ -4,16 +4,20 @@ using System.Collections.Generic;
 using SimpleJSON;
 using System;
 
+
 public class ClientNetworker : MonoBehaviour {
 
 	private string id;
+	public bool connected = false;
+
+	float time;
 
 	UDPReceive udpReceive;
 	UDPSend udpSend;
 
 	void Start(){
 		System.Random random = new System.Random();
-		id = "" + random.Next(9999);
+		id = random.Next(1000000);
 		Application.runInBackground = true;
 		udpReceive = GetComponent<UDPReceive>();
 		udpSend = GetComponent<UDPSend>();
@@ -27,10 +31,31 @@ public class ClientNetworker : MonoBehaviour {
 			var values = JSON.Parse(UDPPacket);
 
 			switch(values["function"].Value){
-                //case "broadcastServer": SetServer(values); break;
-                case "SendWord": SetWordIn(values); break;
-            }
+				case "Confirm": ConfirmIn(values); break;
+		        	case "SendWord": SetWordIn(values); break;
+		        }
 		}
+
+		time += Time.deltaTime;
+		if(time > 1f) {
+			if(!connected) {
+				ConnectToServerOut();
+			}
+			time = 0;
+		}
+	}
+
+	public void ConnectToServerOut(){
+		JSONNode data = new JSONClass();
+
+		data["function"] = "Connect";
+		data["id"] = id;
+
+		udpSend.Send(data);
+	}
+
+	public void ConfirmIn(JSONNode data){
+		connected = true;
 	}
 
 	public void MoveOut(float x, float y){

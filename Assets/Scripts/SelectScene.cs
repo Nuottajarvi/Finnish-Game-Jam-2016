@@ -9,6 +9,6 @@ public class SelectScene : MonoBehaviour {
 	}
 
 	public void LoadServerScene() {
-		SceneManager.LoadScene("server");
+		SceneManager.LoadScene("lobby");
 	}
 }
