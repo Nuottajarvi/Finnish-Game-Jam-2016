@@ -102,6 +102,7 @@ public class Enemy : MonoBehaviour {
 			GameController.Instance.ChangeHealth(-0.1f);
 		} else {
 			GameController.Instance.ChangeHealth(-1f);
+			GameController.Instance.LoseGame();
 		}
     }
 }

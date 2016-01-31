@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Singleton that controls the game state
@@ -58,8 +59,9 @@ public class GameController : MonoBehaviour {
 		GameUI.Instance.SetHealthBarFill(Health);
      }
 
-    void LoseGame() {
-        Debug.Log("Game lost");
+    public void LoseGame() {
+		SceneManager.LoadScene("lobby");
+		UI_phonescreen_script.LoseGame();
     }
 
 	void CreateRitualists() {

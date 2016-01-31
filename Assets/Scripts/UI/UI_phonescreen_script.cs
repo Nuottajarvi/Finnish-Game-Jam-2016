@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class UI_phonescreen_script : MonoBehaviour {
 
@@ -65,5 +66,9 @@ public class UI_phonescreen_script : MonoBehaviour {
 		logString += "\n" + condition;
 
 		logText.text = logString;
+	}
+
+	public static void LoseGame() {
+		SceneManager.LoadScene("lobby");
 	}
 }

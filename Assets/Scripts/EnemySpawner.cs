@@ -26,7 +26,7 @@ public class EnemySpawner : MonoBehaviour {
 
     // Time between spawning new enemy
     float singleSpawnDeltaTime = 1.5f;
-    float waveSpawnDeltaTime = 3f;
+    float waveSpawnDeltaTime = 1f;
 
     WaitForSeconds spawnWaitSingle;
     WaitForSeconds spawnWaitWave;
@@ -35,6 +35,8 @@ public class EnemySpawner : MonoBehaviour {
     int waveEnemiesLeft;
 
     Transform enemyParent;
+
+	const float BossSpeedModifier = 0.2f;
 
     // Speed at easiest difficulty when game starts
     const float StartMoveSpeed = 1.0f;
@@ -127,7 +129,7 @@ public class EnemySpawner : MonoBehaviour {
 			waveEnemiesLeft = 1;
 			GameUI.Instance.SetHealthBarFill(0f);
 		} else {
-			waveEnemiesLeft = 3 + CurrentWave;
+			waveEnemiesLeft = 3 + CurrentWave / 2;
 		}  
     }
 
@@ -146,10 +148,10 @@ public class EnemySpawner : MonoBehaviour {
             enemy = InstantiateEnemy(enemyType);
         }
 
-        enemy.MoveSpeed = currentMoveSpeed;
+		enemy.MoveSpeed = currentMoveSpeed;
 
 		if(enemy.type == Enemy.Type.Boss) {
-			enemy.MoveSpeed /= 3.5f;
+			enemy.MoveSpeed *= BossSpeedModifier;
 		}
 
         enemy.gameObject.SetActive(true);
@@ -228,7 +230,11 @@ public class EnemySpawner : MonoBehaviour {
 
 	public void RestoreSpeeds() {
 		foreach(Enemy enemy in enemies) {
-			enemy.MoveSpeed = currentMoveSpeed;
+			if(enemy.type == Enemy.Type.Normal) {
+				enemy.MoveSpeed = currentMoveSpeed;
+			} else {
+				enemy.MoveSpeed = currentMoveSpeed * BossSpeedModifier;
+			}
 		}
 	}
 
