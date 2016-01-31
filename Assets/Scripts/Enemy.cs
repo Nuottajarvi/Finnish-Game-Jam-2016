@@ -94,6 +94,10 @@ public class Enemy : MonoBehaviour {
     void ReachedCircle() {
         gameObject.SetActive(false);
 
-        GameController.Instance.ReduceHealth();
+		if(type == Type.Normal) {
+			GameController.Instance.ReduceHealth(1);
+		} else {
+			GameController.Instance.ReduceHealth(50);
+		}
     }
 }

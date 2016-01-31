@@ -34,6 +34,7 @@ public class GameController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		WordGenerator.CreateWordPool();
+
 		RitualHandler.Instance.DistributeWords();
         RitualHandler.Instance.NewRitual();	
 	}
@@ -49,8 +50,8 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-    public void ReduceHealth() {
-        Health--;
+    public void ReduceHealth(int amount) {
+        Health -= amount;
 
         if(Health <= 0) {
             LoseGame();

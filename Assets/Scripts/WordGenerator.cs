@@ -30,14 +30,25 @@ public class WordGenerator {
     }
 
 	public static void CreateWordPool() {
-		int wordCount = Mathf.Max(7, ServerNetworker.Instance.connectedPlayers.Count * 4);
+		List<string> tempWords = new List<string>(wordList);
+		int wordCount = 0;
+
+		if(ServerNetworker.Instance != null) {
+			wordCount = Mathf.Max(7, ServerNetworker.Instance.connectedPlayers.Count * 4);
+		} else {
+			wordCount = 7;
+		}
 
 		wordCount = Mathf.Min(wordCount, wordList.Count);
 
 		currentWordPool = new string[wordCount];
-		
+
 		for(int i = 0; i < wordCount; i++) {
-			currentWordPool[i] = wordList[i];
+			string word = wordList[GameController.jamRandomer.Next(wordList.Count)];
+
+			currentWordPool[i] = word;
+
+			tempWords.Remove(word);
 		}
 	}
 
