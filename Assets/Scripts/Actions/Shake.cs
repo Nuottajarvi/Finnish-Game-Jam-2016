@@ -10,7 +10,7 @@ static float accelerometerUpdateInterval = 1.0f / 60.0f;
 static float lowPassKernelWidthInSeconds  = 1.0f;
  
 // This next parameter is initialized to 2.0 per Apple's recommendation, or at least according to Brady! <img draggable="false" class="emoji" alt="😉" src="http://s.w.org/images/core/emoji/72x72/1f609.png">
-float shakeDetectionThreshold = 2.0f;
+float shakeDetectionThreshold = 1.5f;
  
 private float lowPassFilterFactor  = accelerometerUpdateInterval / lowPassKernelWidthInSeconds; 
 private Vector3 lowPassValue = Vector3.zero;
