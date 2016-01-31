@@ -46,6 +46,8 @@ public class RitualHandler {
     public void NewRitual() {
 		int wordCount = 4 + EnemySpawner.Instance.CurrentWave / 2;
 
+		wordCount = Mathf.Min(wordCount, WordGenerator.CurrentWordPool.Length);
+
         currentRitual = new string[wordCount];
 
         for(int i = 0; i < wordCount; i++) {

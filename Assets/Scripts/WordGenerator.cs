@@ -32,7 +32,7 @@ public class WordGenerator {
 		int wordCount = 0;
 
 		if(ServerNetworker.Instance != null) {
-			wordCount = Mathf.Max(7, ServerNetworker.Instance.connectedPlayers.Count * 4);
+			wordCount = ServerNetworker.Instance.connectedPlayers.Count * 4;
 		} else {
 			wordCount = 7;
 		}
