@@ -8,7 +8,7 @@ public class Swipe : PhoneAction {
 	{
 		sendTimer = 0;
 		//time between shortest send in seconds
-		sendLimit = 1.0f;
+		sendLimit = 0.4f;
 	}
 
 	// Update is called once per frame
