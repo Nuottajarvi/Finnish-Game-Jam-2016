@@ -15,7 +15,7 @@ public class UI_phonescreen_script : MonoBehaviour {
 	Text logText;
 
 	[SerializeField]
-	Text[] wordTexts;
+	Transform[] wordElements;
 
 	string logString;
 
@@ -31,9 +31,26 @@ public class UI_phonescreen_script : MonoBehaviour {
 	public void UpdateWordTexts() {
 		if(words != null && words.Count > 0) {
 			for(int i = 0; i < words.Count; i++) {
-				if(wordTexts.Length <= i) break;
+				if(wordElements.Length <= i) break;
 
-				wordTexts[i].text = words[i].word + "\n" + words[i].action;
+				Transform wordParent = wordElements[i];
+
+				wordParent.FindChild("Name").GetComponent<Text>().text = words[i].word;
+				wordParent.FindChild("ActionName").GetComponent<Text>().text = words[i].action.ToString();
+
+				Transform actionImageParent = wordParent.FindChild("ActionImage");
+
+				foreach(Transform child in actionImageParent) {
+					child.gameObject.SetActive(false);
+				}
+
+				for(int j = 0; j < actionImageParent.childCount; j++) {
+					GameObject imageObject = actionImageParent.GetChild(j).gameObject;
+
+					if(imageObject.name.Equals(words[i].action.ToString())) {
+						imageObject.SetActive(true);
+					}
+				}
 			}
 		}
 	}

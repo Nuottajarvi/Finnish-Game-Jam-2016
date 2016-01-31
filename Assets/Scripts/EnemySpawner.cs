@@ -211,6 +211,8 @@ public class EnemySpawner : MonoBehaviour {
 				return;
 			}
 		}
+
+		StartCoroutine(GameObject.Find("demon").GetComponent<Demon>().Raise());
 	}
 
 	public void RestoreSpeeds() {
