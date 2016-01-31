@@ -16,6 +16,10 @@ public class Demon : MonoBehaviour {
 		}*/
 	}
 
+	public void StartRise() {
+		StartCoroutine("Raise");
+	}
+
 	public IEnumerator Raise(){
 		
 		//CHANGE RING COLOR
@@ -54,6 +58,10 @@ public class Demon : MonoBehaviour {
 			if(time > 0.25f) {
 				fireBallSprite.flipY = !fireBallSprite.flipY;
 				time = 0;
+			}
+
+			if(fireBall.transform.position.x > EnemySpawner.Instance.GetBossPosition().x) {
+				EnemySpawner.Instance.KillBoss();
 			}
 
 			fireBall.transform.position+=new Vector3(3 + fireBall.transform.position.x,0,0) * Time.deltaTime;

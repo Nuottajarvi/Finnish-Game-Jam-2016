@@ -131,6 +131,6 @@ public class RitualHandler {
 	}
 
 	void RitualComplete() {
-		Rituals.DestructionAreaRitual();
+		Rituals.CompleteRitual();
 	}
 }

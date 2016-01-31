@@ -204,6 +204,17 @@ public class EnemySpawner : MonoBehaviour {
 		// TODO: Push all enemies away from circle
 	}
 
+	public void StopBoss() {
+		foreach(Enemy enemy in enemies) {
+			if(enemy.type == Enemy.Type.Boss) {
+				enemy.MoveSpeed = 0f;
+				return;
+			}
+		}
+
+		GameObject.Find("demon").GetComponent<Demon>().StartRise();
+	}
+
 	public void KillBoss() {
 		foreach(Enemy enemy in enemies) {
 			if(enemy.type == Enemy.Type.Boss) {
@@ -211,13 +222,21 @@ public class EnemySpawner : MonoBehaviour {
 				return;
 			}
 		}
-
-		StartCoroutine(GameObject.Find("demon").GetComponent<Demon>().Raise());
 	}
 
 	public void RestoreSpeeds() {
 		foreach(Enemy enemy in enemies) {
 			enemy.MoveSpeed = currentMoveSpeed;
 		}
+	}
+
+	public Vector3 GetBossPosition() {
+		foreach(Enemy enemy in enemies) {
+			if(enemy.type == Enemy.Type.Boss) {
+				return enemy.transform.position;
+			}
+		}
+
+		return Vector3.zero;
 	}
 }
