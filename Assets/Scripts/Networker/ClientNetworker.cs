@@ -89,7 +89,7 @@ public class ClientNetworker : MonoBehaviour {
 		if (sendLimit < sendCounter) {
 			//Debug.LogWarning(action.ToString() + " out");
 
-			#if Handheld
+			#if UNITY_ANDROID
 			Handheld.Vibrate();
 			#endif
 
