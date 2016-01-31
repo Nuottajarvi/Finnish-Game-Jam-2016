@@ -86,7 +86,10 @@ public class ClientNetworker : MonoBehaviour {
     public void WordOut(WordActionGenerator.WordAction action) {
 		if (sendLimit < sendCounter) {
 			//Debug.LogWarning(action.ToString() + " out");
+
+			#if Handheld
 			Handheld.Vibrate();
+			#endif
 
 			JSONNode data = new JSONClass();
 
