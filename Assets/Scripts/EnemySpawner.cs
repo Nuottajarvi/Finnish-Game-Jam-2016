@@ -212,6 +212,8 @@ public class EnemySpawner : MonoBehaviour {
 			}
 		}
 
+		GameObject.Find("AudioPlayer").transform.FindChild("DemonSummon").GetComponent<AudioSource>();
+
 		GameObject.Find("demon").GetComponent<Demon>().StartRise();
 	}
 
