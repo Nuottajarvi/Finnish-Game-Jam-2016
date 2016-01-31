@@ -14,6 +14,9 @@ public class UI_phonescreen_script : MonoBehaviour {
 	[SerializeField]
 	Text logText;
 
+	[SerializeField]
+	Text[] wordTexts;
+
 	string logString;
 
 	void Start() {
@@ -22,19 +25,17 @@ public class UI_phonescreen_script : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        //Empty text
-        wordList.text = "";
+		idText.text = "ID: " + id;
+	}
 
+	public void UpdateWordTexts() {
 		if(words != null && words.Count > 0) {
-			//Set text with all the contents from the lists
 			for(int i = 0; i < words.Count; i++) {
-				wordList.text = wordList.text + "\n<b>" + words[i].word + "</b>\n" + words[i].action + "\n";
+				if(wordTexts.Length <= i) break;
+
+				wordTexts[i].text = words[i].word + "\n" + words[i].action;
 			}
 		}
-
-
-		idText.text = "ID: " + id;
-
 	}
 
 	void OnEnable() {
