@@ -6,7 +6,9 @@ public class Swipe : PhoneAction {
 	// Use this for initialization
 	void Start()
 	{
-		sendTimer = 0.0f;
+		sendTimer = 0;
+		//time between shortest send in seconds
+		sendLimit = 1.0f;
 	}
 
 	// Update is called once per frame

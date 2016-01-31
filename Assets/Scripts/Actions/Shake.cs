@@ -5,7 +5,7 @@ public class Shake : PhoneAction {
 
 	/* Start shake detection variables */
 	public float avrgTime = 0.5f;
-	public float peakLevel = 0.6f;
+	public float peakLevel = 0.8f;
 	public float endCountTime = 0.6f;
 	public int shakeDir;
 	public int shakeCount;
@@ -26,7 +26,9 @@ public class Shake : PhoneAction {
 
 	// Use this for initialization
 	void Start () {
-		sendTimer = 0.0f;
+		sendTimer = 0;
+		//time between shortest send in seconds
+		sendLimit = 1.0f;
 	}
 
 	bool ShakeDetector()
@@ -88,13 +90,14 @@ public class Shake : PhoneAction {
 		ShakeDetector();
 		if (counting && sendTimer > sendLimit)
 		{
-			clientNetworker.WordOut(WordActionGenerator.WordAction.Shake);
 			sendTimer = 0;
+			clientNetworker.WordOut(WordActionGenerator.WordAction.Shake);
+			
 		}
 
-		if (Input.GetKeyUp("space")) {
+		/*if (Input.GetKeyUp("space")) {
 			clientNetworker.WordOut(WordActionGenerator.WordAction.Shake);
-		}
+		}*/
 
 	}
 }

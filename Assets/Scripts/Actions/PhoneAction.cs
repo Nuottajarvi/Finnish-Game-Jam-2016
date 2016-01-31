@@ -15,14 +15,9 @@ public class PhoneAction : MonoBehaviour {
 	protected float sendLimit;
 
 	// Use this for initialization
-	void Start () {
+	/*void Start () {
 		sendTimer = 0;
 		//time between shortest send in seconds
 		sendLimit = 1.0f;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+	}*/
 }

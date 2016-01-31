@@ -15,15 +15,25 @@ public class ClientNetworker : MonoBehaviour {
 	UDPReceive udpReceive;
 	UDPSend udpSend;
 
+	float sendLimit;
+	float sendCounter;
+
 	void Start(){
 		System.Random random = new System.Random();
 		id = random.Next(1000000).ToString();
 		Application.runInBackground = true;
 		udpReceive = GetComponent<UDPReceive>();
 		udpSend = GetComponent<UDPSend>();
+
+		sendLimit = 1.0f;
+		sendCounter = 0;
+
 	}
 
 	void Update(){
+
+		sendCounter = sendCounter + Time.deltaTime;
+
 		//TODO: Mitä jos tulee useampi?
 		string[] UDPPackets = udpReceive.GetLatestUDPPackets();
 
@@ -74,30 +84,37 @@ public class ClientNetworker : MonoBehaviour {
 
     //Send completed action
     public void WordOut(WordActionGenerator.WordAction action) {
-		Debug.LogWarning(action.ToString() + " out");
+		if (sendLimit < sendCounter) {
+			Debug.LogWarning(action.ToString() + " out");
 
-        JSONNode data = new JSONClass();
+			JSONNode data = new JSONClass();
 
-        //Get script containing words and actions
-        UI_phonescreen_script uiPhoneScreenScript = GameObject.Find("UI_phonescreen").GetComponent<UI_phonescreen_script>();
-        JSONArray arrayToSend = new JSONArray();
+			//Get script containing words and actions
+			UI_phonescreen_script uiPhoneScreenScript = GameObject.Find("UI_phonescreen").GetComponent<UI_phonescreen_script>();
+			JSONArray arrayToSend = new JSONArray();
 
-        //Get words that match performed action
-        for (int i = 0; i < uiPhoneScreenScript.words.Count; i++) {
-            if (uiPhoneScreenScript.words[i].action == action) {
-				JSONNode wordActionPair = new JSONClass();
-				wordActionPair["word"] = uiPhoneScreenScript.words[i].word;
-				wordActionPair["action"].AsInt = (int)uiPhoneScreenScript.words[i].action;
+			//Get words that match performed action
+			for (int i = 0; i < uiPhoneScreenScript.words.Count; i++)
+			{
+				if (uiPhoneScreenScript.words[i].action == action)
+				{
+					JSONNode wordActionPair = new JSONClass();
+					wordActionPair["word"] = uiPhoneScreenScript.words[i].word;
+					wordActionPair["action"].AsInt = (int)uiPhoneScreenScript.words[i].action;
 
-				arrayToSend.Add(wordActionPair);
-            }
-        }
+					arrayToSend.Add(wordActionPair);
+				}
+			}
 
-	data["id"] = id;
-	data["function"] = "wordOut";
-        data["words"] = arrayToSend;
+			data["id"] = id;
+			data["function"] = "wordOut";
+			data["words"] = arrayToSend;
 
-        udpSend.Send(data);
+			udpSend.Send(data);
+
+			sendCounter = 0;
+		}
+
     }
 
     //Set current words

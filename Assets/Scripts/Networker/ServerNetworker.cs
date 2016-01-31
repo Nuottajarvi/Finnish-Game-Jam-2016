@@ -57,7 +57,7 @@ public class ServerNetworker : MonoBehaviour {
 
 		if(!connectedPlayers.Contains(data["id"]) && Application.loadedLevel != 0){
 			connectedPlayers.Add(data["id"]);
-			LobbyController lc = GameObject.Find("LobbyPanel").GetComponent<LobbyController>();
+			LobbyController lc = GameObject.Find("PlayerText").GetComponent<LobbyController>();
 			lc.AddPlayer(data["id"]);
 		}
 

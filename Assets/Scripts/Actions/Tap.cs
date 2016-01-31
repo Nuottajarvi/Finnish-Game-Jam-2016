@@ -6,6 +6,8 @@ public class Tap : PhoneAction {
 	// Use this for initialization
 	void Start () {
 		sendTimer = 0;
+		//time between shortest send in seconds
+		sendLimit = 1.0f;
 	}
 	
 	// Update is called once per frame
@@ -13,9 +15,7 @@ public class Tap : PhoneAction {
 
 		sendTimer = sendTimer + Time.deltaTime;
 
-		if (Input.GetMouseButtonUp(0)) {
-			clientNetworker.WordOut(WordActionGenerator.WordAction.Tap);
-		}
+
 
         //A swipe that doesn't move enough is considered as a tap on screen
         if (Input.touchCount > 0)
@@ -41,6 +41,10 @@ public class Tap : PhoneAction {
                     }
                     break;
             }
-        }
-    }
+		}
+		else if (Input.GetMouseButtonUp(0))
+		{
+			clientNetworker.WordOut(WordActionGenerator.WordAction.Tap);
+		}
+	}
 }
