@@ -3,101 +3,55 @@ using System.Collections;
 
 public class Shake : PhoneAction {
 
-	/* Start shake detection variables */
-	public float avrgTime = 0.5f;
-	public float peakLevel = 0.8f;
-	public float endCountTime = 0.6f;
-	public int shakeDir;
-	public int shakeCount;
+ 
+static float accelerometerUpdateInterval = 1.0f / 60.0f;
+ 
+// The greater the value of LowPassKernelWidthInSeconds, the slower the filtered value will converge towards current input sample (and vice versa).
+static float lowPassKernelWidthInSeconds  = 1.0f;
+ 
+// This next parameter is initialized to 2.0 per Apple's recommendation, or at least according to Brady! <img draggable="false" class="emoji" alt="😉" src="http://s.w.org/images/core/emoji/72x72/1f609.png">
+float shakeDetectionThreshold = 2.0f;
+ 
+private float lowPassFilterFactor  = accelerometerUpdateInterval / lowPassKernelWidthInSeconds; 
+private Vector3 lowPassValue = Vector3.zero;
+private Vector3 acceleration;
+	private Vector3 deltaAcceleration;
+ 
+ 
+void Start()
 
-	Vector3 avrgAcc = Vector3.zero;
-	int countPos;
-	int countNeg;
-	int lastPeak;
-	int firstPeak;
-	bool counting;
-	float timer;
+	{
+		shakeDetectionThreshold *= shakeDetectionThreshold;
+		lowPassValue = Input.acceleration;
 
-
-	/* End shake detection variables */
-
-
-
-
-	// Use this for initialization
-	void Start () {
 		sendTimer = 0;
 		//time between shortest send in seconds
 		sendLimit = 1.0f;
+
 	}
 
-	bool ShakeDetector()
+
+	void Update()
 	{
-		// read acceleration:
-		Vector3 curAcc = Input.acceleration;
-		// update average value:
-		avrgAcc = Vector3.Lerp(avrgAcc, curAcc, avrgTime * Time.deltaTime);
-		// calculate peak size:
-		curAcc -= avrgAcc;
-		// variable peak is zero when no peak detected...
-		int peak = 0;
-		// or +/- 1 according to the peak polarity:
-		if (curAcc.y > peakLevel) peak = 1;
-		if (curAcc.y < -peakLevel) peak = -1;
-		// do nothing if peak is the same of previous frame:
-		if (peak == lastPeak)
-			return false;
-		// peak changed state: process it
-		lastPeak = peak; // update lastPeak
-		if (peak != 0)
-		{ // if a peak was detected...
-			timer = 0; // clear end count timer...
-			if (peak > 0) // and increment corresponding count
-				countPos++;
-			else
-				countNeg++;
-			if (!counting)
-			{ // if it's the first peak...
-				counting = true; // start shake counting
-				firstPeak = peak; // save the first peak direction
-			}
-		}
-		else // but if no peak detected...
-		if (counting)
-		{ // and it was counting...
-			timer += Time.deltaTime; // increment timer
-			if (timer > endCountTime)
-			{ // if endCountTime reached...
-				counting = false; // finish counting...
-				shakeDir = firstPeak; // inform direction of first shake...
-				if (countPos > countNeg) // and return the higher count
-					shakeCount = countPos;
-				else
-					shakeCount = countNeg;
-				// zero counters and become ready for next shake count
-				countPos = 0;
-				countNeg = 0;
-				return true; // count finished
-			}
-		}
-		return false;
-	}
-
-	// Update is called once per frame
-	void Update () {
 		sendTimer = sendTimer + Time.deltaTime;
 
-		ShakeDetector();
-		if (counting && sendTimer > sendLimit)
+		acceleration = Input.acceleration;
+		lowPassValue = Vector3.Lerp(lowPassValue, acceleration, lowPassFilterFactor);
+		deltaAcceleration = acceleration - lowPassValue;
+		if (deltaAcceleration.sqrMagnitude >= shakeDetectionThreshold)
 		{
-			sendTimer = 0;
-			clientNetworker.WordOut(WordActionGenerator.WordAction.Shake);
-			
+			if (sendTimer > sendLimit)
+			{
+				sendTimer = 0;
+				clientNetworker.WordOut(WordActionGenerator.WordAction.Shake);
+
+			}
 		}
 
-		/*if (Input.GetKeyUp("space")) {
-			clientNetworker.WordOut(WordActionGenerator.WordAction.Shake);
-		}*/
-
 	}
+
+
+
+
+
 }
