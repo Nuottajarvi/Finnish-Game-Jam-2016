@@ -90,7 +90,13 @@ public class Enemy : MonoBehaviour {
 	}
 
     void ReachedCircle() {
-        gameObject.SetActive(false);
+		if(GameObject.Find("AudioPlayer").transform.FindChild("EnemyHits").GetComponent<AudioSource>().isPlaying == false)
+		{
+			GameObject.Find("AudioPlayer").transform.FindChild("EnemyHits").GetComponent<AudioSource>().Play();
+		}
+		
+
+		gameObject.SetActive(false);
 
 		if(type == Type.Normal) {
 			GameController.Instance.ChangeHealth(-0.1f);
