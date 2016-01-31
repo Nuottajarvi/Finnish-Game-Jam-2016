@@ -69,6 +69,6 @@ public class UI_phonescreen_script : MonoBehaviour {
 	}
 
 	public static void LoseGame() {
-		SceneManager.LoadScene("lobby");
+		SceneManager.LoadScene("selection");
 	}
 }

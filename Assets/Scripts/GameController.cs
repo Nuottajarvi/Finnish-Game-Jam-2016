@@ -60,9 +60,10 @@ public class GameController : MonoBehaviour {
      }
 
     public void LoseGame() {
-		ServerNetworker.Instance.GameLostOut();
-		SceneManager.LoadScene("lobby");
+		if(ServerNetworker.Instance != null)
+			ServerNetworker.Instance.GameLostOut();
 
+		SceneManager.LoadScene("selection");
     }
 
 	void CreateRitualists() {
