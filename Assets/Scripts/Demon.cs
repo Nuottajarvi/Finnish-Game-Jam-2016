@@ -14,8 +14,6 @@ public class Demon : MonoBehaviour {
 	}
 
 	public IEnumerator Raise(){
-		Debug.Log("RERSER");
-
 		//CHANGE RING COLOR
 		Image healthbar = GameObject.Find("Bar").GetComponent<Image>();
 		healthbar.color = Color.red;
