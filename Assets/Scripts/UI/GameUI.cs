@@ -82,5 +82,6 @@ public class GameUI : MonoBehaviour {
 
 	public void FlashRitualText(string color) {
 		SetNewRitualText(currentWords, color);
+		redFlashTime = Time.time;
 	}
 }
