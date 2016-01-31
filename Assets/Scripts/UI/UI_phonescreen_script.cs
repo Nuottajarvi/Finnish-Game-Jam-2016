@@ -5,15 +5,21 @@ using System.Collections.Generic;
 public class UI_phonescreen_script : MonoBehaviour {
 
     public Text wordList;
+	public Text idText;
 	//public string[] words;
 	//public WordActionGenerator.WordAction[] wordActions; 
 	public List<Word> words;
+	public string id;
 
 	[SerializeField]
 	Text logText;
 
 	string logString;
-	
+
+	void Start() {
+		id = "Not registered yet";
+	}
+
 	// Update is called once per frame
 	void Update () {
         //Empty text
@@ -25,6 +31,10 @@ public class UI_phonescreen_script : MonoBehaviour {
 				wordList.text = wordList.text + "\n<b>" + words[i].word + "</b>\n" + words[i].action + "\n";
 			}
 		}
+
+
+		idText.text = "ID: " + id;
+
 	}
 
 	void OnEnable() {

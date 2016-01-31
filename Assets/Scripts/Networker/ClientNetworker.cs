@@ -57,6 +57,7 @@ public class ClientNetworker : MonoBehaviour {
 	}
 
 	public void ConfirmIn(JSONNode data){
+		GameObject.Find("UI_phonescreen").GetComponent<UI_phonescreen_script>().id = id;
 		connected = true;
 	}
 
