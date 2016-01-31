@@ -45,20 +45,18 @@ public class Enemy : MonoBehaviour {
     }
 
     void ChooseSpawnPosition() {
-        System.Random rand = new System.Random();
-
 		float spawnDirectionRad;
 		float spawnDirectionDeg;
 
 		if(type == Type.Normal) {
-			spawnDirectionRad = (float)rand.NextDouble() * 2 * Mathf.PI;
+			spawnDirectionRad = (float)GameController.jamRandomer.NextDouble() * 2 * Mathf.PI;
 			spawnDirectionDeg = (spawnDirectionRad / (2 * Mathf.PI)) * 360;
 		} else {
 			spawnDirectionRad = 0;
 			spawnDirectionDeg = 0;
 		}
 
-        int spawnDistance = rand.Next(SpawnDistanceMin, SpawnDistanceMax);
+        int spawnDistance = GameController.jamRandomer.Next(SpawnDistanceMin, SpawnDistanceMax);
 
         enemyTransform.position = Vector3.zero;
 
@@ -94,6 +92,10 @@ public class Enemy : MonoBehaviour {
     void ReachedCircle() {
         gameObject.SetActive(false);
 
-        GameController.Instance.ReduceHealth();
+		if(type == Type.Normal) {
+			GameController.Instance.ChangeHealth(-0.1f);
+		} else {
+			GameController.Instance.ChangeHealth(-1f);
+		}
     }
 }

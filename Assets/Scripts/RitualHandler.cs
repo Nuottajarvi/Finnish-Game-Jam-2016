@@ -14,7 +14,6 @@ public class RitualHandler {
         }
     }
 
-    System.Random random;
 
     static string[] currentRitual;
     public static string[] CurrentRitual {
@@ -31,9 +30,18 @@ public class RitualHandler {
 	Dictionary<string, List<Word>> wordsByClient;
 
     private RitualHandler() {
-        random = new System.Random();
 		currentWords = new List<Word>();
+
+		EnemySpawner.onNewWave += OnNewWave;
     }
+
+	void OnNewWave(int wave) {
+		if(wave > 4 && (wave - 1) % 4 == 0) {
+			// New words after each boss wave
+			DistributeWords();
+			NewRitual();
+		}
+	}
 
     public void NewRitual() {
 		int wordCount = 4 + EnemySpawner.Instance.CurrentWave / 2;
@@ -56,15 +64,17 @@ public class RitualHandler {
 	public void DistributeWords() {
 		wordsByClient = new Dictionary<string, List<Word>>();
 
+		if(ServerNetworker.Instance == null) return;
+
 		List<string> clientIds = ServerNetworker.Instance.connectedPlayers;
 
 		if(clientIds.Count == 0) return;
 
+		WordGenerator.CreateWordPool();
+
 		for(int i = 0; i < clientIds.Count; i++) {
 			wordsByClient[clientIds[i]] = new List<Word>();
 		}
-
-		System.Random rand = new System.Random();
 
 		List<string> wordPool = new List<string>(WordGenerator.CurrentWordPool);
 		
@@ -72,7 +82,7 @@ public class RitualHandler {
 		while(wordPool.Count > 0) {
 			Word word = new Word();
 
-			word.word = wordPool[rand.Next(0, wordPool.Count)];
+			word.word = wordPool[GameController.jamRandomer.Next(0, wordPool.Count)];
 			word.action = WordActionGenerator.GetWordAction();
 			word.clientId = clientIds[wordPool.Count % clientIds.Count];
 
@@ -87,8 +97,6 @@ public class RitualHandler {
 	}
 
 	public void SendWordDataToClient(string clientId, List<Word> wordsToSend) {
-		Debug.Log("Send word data to " + clientId);
-
 		for(int i = 0; i < currentWords.Count; i++) {
 			Word word = currentWords[i];
 

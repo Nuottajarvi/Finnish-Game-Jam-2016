@@ -6,6 +6,9 @@ using UnityEngine.UI;
 public class EnemySpawner : MonoBehaviour {
     static EnemySpawner instance;
 
+	public delegate void NewWaveDelegate(int wave);
+	public static event NewWaveDelegate onNewWave;
+
     public static EnemySpawner Instance {
         get { return instance; }
     }
@@ -112,6 +115,10 @@ public class EnemySpawner : MonoBehaviour {
 
     void NextWave() {
         CurrentWave++;
+
+		if(onNewWave != null)
+			onNewWave(CurrentWave);
+
         GameUI.Instance.SetWaveText(CurrentWave);
 
         IncreaseMoveSpeed();
