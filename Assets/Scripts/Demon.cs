@@ -5,15 +5,8 @@ using UnityEngine.UI;
 using System;
 
 public class Demon : MonoBehaviour {
-
-	float time = 0f;
-
 	void Update(){
-		/*time+=Time.deltaTime;
-		if(time > 2){
-			StartCoroutine("Raise");
-			time = -100000;
-		}*/
+		if(Time.frameCount == 60) StartRise();
 	}
 
 	public void StartRise() {
@@ -21,6 +14,8 @@ public class Demon : MonoBehaviour {
 	}
 
 	public IEnumerator Raise(){
+		Debug.Log("RERSER");
+
 		//CHANGE RING COLOR
 		Image healthbar = GameObject.Find("Bar").GetComponent<Image>();
 		healthbar.color = Color.red;

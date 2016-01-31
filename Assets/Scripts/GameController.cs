@@ -47,6 +47,7 @@ public class GameController : MonoBehaviour {
 		if(EnemySpawner.Instance.IsBossWave) {
 			if(Health >= 1.0f) {
 				EnemySpawner.Instance.StopBoss();
+				Health = 0.0f;
 			}
 		}
 	}
