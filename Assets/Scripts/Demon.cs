@@ -21,7 +21,6 @@ public class Demon : MonoBehaviour {
 	}
 
 	public IEnumerator Raise(){
-		
 		//CHANGE RING COLOR
 		Image healthbar = GameObject.Find("Bar").GetComponent<Image>();
 		healthbar.color = Color.red;
@@ -33,7 +32,7 @@ public class Demon : MonoBehaviour {
 		ringParticles.emissionRate = 300;
 
 		//DECREASE BLOOM
-		BloomOptimized bloom = GameObject.Find("Main Camera").GetComponent<BloomOptimized>();
+		BloomOptimized bloom = Camera.main.GetComponent<BloomOptimized>();
 		bloom.intensity = 0.3f;
 
 		yield return new WaitForSeconds(1f);
@@ -68,7 +67,7 @@ public class Demon : MonoBehaviour {
 			yield return new WaitForFixedUpdate();
 		}
 
-		StartCoroutine("Reset");
+		yield return StartCoroutine("Reset");
 	}
 
 	public IEnumerator Reset(){
@@ -79,7 +78,7 @@ public class Demon : MonoBehaviour {
 		fireBallSprite.color = new Color(0, 0, 0, 0);
 		fireBall.transform.position = new Vector3(0, -0.5f, 0);
 
-		while(spriteRenderer.color.a > 1){
+		while(spriteRenderer.color.a > 0.01f){
 			spriteRenderer.color = Color.Lerp(spriteRenderer.color, new Color(1,1,1,0), Time.deltaTime * 2);
 			yield return new WaitForFixedUpdate();
 		}

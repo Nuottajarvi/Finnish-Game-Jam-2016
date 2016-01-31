@@ -149,7 +149,7 @@ public class EnemySpawner : MonoBehaviour {
         enemy.MoveSpeed = currentMoveSpeed;
 
 		if(enemy.type == Enemy.Type.Boss) {
-			enemy.MoveSpeed /= 2.5f;
+			enemy.MoveSpeed /= 3.5f;
 		}
 
         enemy.gameObject.SetActive(true);
@@ -208,7 +208,7 @@ public class EnemySpawner : MonoBehaviour {
 		foreach(Enemy enemy in enemies) {
 			if(enemy.type == Enemy.Type.Boss) {
 				enemy.MoveSpeed = 0f;
-				return;
+				break;
 			}
 		}
 

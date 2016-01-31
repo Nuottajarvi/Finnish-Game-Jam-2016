@@ -42,7 +42,7 @@ public class WordGenerator {
 		currentWordPool = new string[wordCount];
 
 		for(int i = 0; i < wordCount; i++) {
-			string word = wordList[GameController.jamRandomer.Next(wordList.Count)];
+			string word = tempWords[GameController.jamRandomer.Next(tempWords.Count)];
 
 			currentWordPool[i] = word;
 
