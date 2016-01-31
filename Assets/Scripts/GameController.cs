@@ -18,9 +18,9 @@ public class GameController : MonoBehaviour {
 
 	Dictionary<string, List<Word>> wordsByClient;
 
-    const int StartingHealth = 20;
+	const float StartingHealth = 1.0f;
 
-    public int Health {
+    public float Health {
         get; private set;
     }
 
@@ -39,23 +39,21 @@ public class GameController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		GameUI.Instance.IncreaseHealthBarFill(Time.deltaTime * 0.01f);
+		ChangeHealth(Time.deltaTime * 0.01f);
 
 		if(EnemySpawner.Instance.IsBossWave) {
-			if(GameUI.Instance.GetHealthBarFill() >= 1.0f) {
+			if(Health >= 1.0f) {
 				EnemySpawner.Instance.KillBoss();
 			}
 		}
 	}
 
-    public void ReduceHealth(int amount) {
-        Health -= amount;
+    public void ChangeHealth(float amount) {
+        Health += amount;
 
-        if(Health <= 0) {
-            LoseGame();
-        }
+		Health = Mathf.Clamp(Health, 0f, 1f);
 
-        GameUI.Instance.SetHealthBarFill((float)Health / (float)StartingHealth);
+		GameUI.Instance.SetHealthBarFill(Health);
      }
 
     void LoseGame() {

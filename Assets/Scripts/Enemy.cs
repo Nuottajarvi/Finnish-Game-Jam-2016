@@ -49,7 +49,7 @@ public class Enemy : MonoBehaviour {
 		float spawnDirectionDeg;
 
 		if(type == Type.Normal) {
-			spawnDirectionRad = (float)rand.NextDouble() * 2 * Mathf.PI;
+			spawnDirectionRad = (float)GameController.jamRandomer.NextDouble() * 2 * Mathf.PI;
 			spawnDirectionDeg = (spawnDirectionRad / (2 * Mathf.PI)) * 360;
 		} else {
 			spawnDirectionRad = 0;
@@ -93,9 +93,9 @@ public class Enemy : MonoBehaviour {
         gameObject.SetActive(false);
 
 		if(type == Type.Normal) {
-			GameController.Instance.ReduceHealth(1);
+			GameController.Instance.ChangeHealth(-0.1f);
 		} else {
-			GameController.Instance.ReduceHealth(50);
+			GameController.Instance.ChangeHealth(-1f);
 		}
     }
 }
