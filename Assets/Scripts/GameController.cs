@@ -14,7 +14,7 @@ public class GameController : MonoBehaviour {
         }
     }
 
-	public static System.Random jamRandomer;
+	public static System.Random jamRandomer = new System.Random(666);
 
 	Dictionary<string, List<Word>> wordsByClient;
 
@@ -27,8 +27,6 @@ public class GameController : MonoBehaviour {
     void Awake() {
         instance = this;
         Health = StartingHealth;
-
-		jamRandomer = new System.Random(666);
     }
 
 	// Use this for initialization

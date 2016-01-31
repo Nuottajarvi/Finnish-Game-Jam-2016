@@ -45,8 +45,6 @@ public class Enemy : MonoBehaviour {
     }
 
     void ChooseSpawnPosition() {
-        System.Random rand = new System.Random();
-
 		float spawnDirectionRad;
 		float spawnDirectionDeg;
 
@@ -58,7 +56,7 @@ public class Enemy : MonoBehaviour {
 			spawnDirectionDeg = 0;
 		}
 
-        int spawnDistance = rand.Next(SpawnDistanceMin, SpawnDistanceMax);
+        int spawnDistance = GameController.jamRandomer.Next(SpawnDistanceMin, SpawnDistanceMax);
 
         enemyTransform.position = Vector3.zero;
 

@@ -12,12 +12,10 @@ public class WordGenerator {
 		}
 	}
 
-    static System.Random rand = new System.Random();
-
     //Get random word from the list
     public static string GetWord() {
         //Get random word
-        string wordToReturn = currentWordPool[rand.Next(0, currentWordPool.Length)];
+        string wordToReturn = currentWordPool[GameController.jamRandomer.Next(0, currentWordPool.Length)];
 
         //Capitalize and return
         return FirstCharToUpper(wordToReturn);
