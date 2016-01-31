@@ -103,8 +103,19 @@ public class ServerNetworker : MonoBehaviour {
 
 		data["id"] = words[0].clientId;
 
-		udpSend.Send(data);
+		StartCoroutine(sendWordsOverAndOverAgain(data));
 	}
+
+	IEnumerator sendWordsOverAndOverAgain(){
+
+		int i = 0;
+
+		while(i < 5){
+			udpSend.Send(data);
+			yield return new WaitForSeconds(0.5f);
+			i++;
+		}
+	};
 
 	public void GameLostOut() {
 		JSONNode data = new JSONClass();
