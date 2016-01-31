@@ -25,7 +25,7 @@ public class ClientNetworker : MonoBehaviour {
 		udpReceive = GetComponent<UDPReceive>();
 		udpSend = GetComponent<UDPSend>();
 		
-		sendLimit = 1.0f;
+		sendLimit = 0.5f;
 		sendCounter = 0;
 
 	}

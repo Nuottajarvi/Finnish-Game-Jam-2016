@@ -32,7 +32,7 @@ public class WordGenerator {
 		int wordCount = 0;
 
 		if(ServerNetworker.Instance != null) {
-			wordCount = Mathf.Max(7, ServerNetworker.Instance.connectedPlayers.Count * 4);
+			wordCount = ServerNetworker.Instance.connectedPlayers.Count * 4;
 		} else {
 			wordCount = 7;
 		}
@@ -42,7 +42,7 @@ public class WordGenerator {
 		currentWordPool = new string[wordCount];
 
 		for(int i = 0; i < wordCount; i++) {
-			string word = wordList[GameController.jamRandomer.Next(wordList.Count)];
+			string word = tempWords[GameController.jamRandomer.Next(tempWords.Count)];
 
 			currentWordPool[i] = word;
 
