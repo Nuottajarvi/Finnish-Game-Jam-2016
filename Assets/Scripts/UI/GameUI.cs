@@ -24,7 +24,7 @@ public class GameUI : MonoBehaviour {
 
 	string[] currentWords;
 
-	float redFlashTime;
+	float textFlashTime;
 
     void Awake() {
         if(instance == null)
@@ -36,8 +36,8 @@ public class GameUI : MonoBehaviour {
     }
 
 	void Update() {
-		if(redFlashTime > 0f && Time.time - redFlashTime > 0.5f) {
-			redFlashTime = 0f;
+		if(textFlashTime > 0f && Time.time - textFlashTime > 0.4f) {
+			textFlashTime = 0f;
 
 			SetNewRitualText(currentWords, string.Empty);
 		}
@@ -82,6 +82,6 @@ public class GameUI : MonoBehaviour {
 
 	public void FlashRitualText(string color) {
 		SetNewRitualText(currentWords, color);
-		redFlashTime = Time.time;
+		textFlashTime = Time.time;
 	}
 }

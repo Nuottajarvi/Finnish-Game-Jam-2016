@@ -60,6 +60,8 @@ public class RitualHandler {
 			currentRitual[i] = word;
         }
 
+		currentWordIndex = 0;
+
         GameUI.Instance.SetNewRitualText(currentRitual, string.Empty);
     }
 
@@ -122,6 +124,8 @@ public class RitualHandler {
 					currentWordIndex = 0;
 					RitualComplete();
 					NewRitual();
+				} else {
+					GameUI.Instance.FlashRitualText("green");
 				}
 
 				return;
