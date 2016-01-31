@@ -115,7 +115,7 @@ public class ServerNetworker : MonoBehaviour {
 			yield return new WaitForSeconds(0.5f);
 			i++;
 		}
-	};
+	}
 
 	public void GameLostOut() {
 		JSONNode data = new JSONClass();
