@@ -106,7 +106,7 @@ public class ServerNetworker : MonoBehaviour {
 		StartCoroutine(sendWordsOverAndOverAgain(data));
 	}
 
-	IEnumerator sendWordsOverAndOverAgain(JSONData data){
+	IEnumerator sendWordsOverAndOverAgain(JSONNode data){
 
 		int i = 0;
 
