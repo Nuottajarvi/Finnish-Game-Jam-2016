@@ -36,7 +36,7 @@ public class EnemySpawner : MonoBehaviour {
 
     Transform enemyParent;
 
-	const float BossSpeedModifier = 0.2f;
+	const float BossSpeedModifier = 0.3f;
 
     // Speed at easiest difficulty when game starts
     const float StartMoveSpeed = 1.0f;
@@ -213,6 +213,8 @@ public class EnemySpawner : MonoBehaviour {
 				break;
 			}
 		}
+
+		GameObject.Find("AudioPlayer").transform.FindChild("DemonSummon").GetComponent<AudioSource>();
 
 		GameObject.Find("demon").GetComponent<Demon>().StartRise();
 	}

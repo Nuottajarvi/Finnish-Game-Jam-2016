@@ -43,7 +43,9 @@ public class ClientNetworker : MonoBehaviour {
 			if(values["id"].Value == id){
 				switch(values["function"].Value){
 					case "Confirm": ConfirmIn(values); break;
-			        	case "SendWord": SetWordIn(values); break;
+			        case "SendWord": SetWordIn(values); break;
+					case "GameStatus": GameStatusIn(values); break;
+
 			        }
 			}
 		}
@@ -141,4 +143,9 @@ public class ClientNetworker : MonoBehaviour {
 		uiPhoneScreenScript.UpdateWordTexts();
     }
 
+	public void GameStatusIn(JSONNode data) {
+		if(data["status"].Value == "lost") {
+			UI_phonescreen_script.LoseGame();
+		}
+	}
 }

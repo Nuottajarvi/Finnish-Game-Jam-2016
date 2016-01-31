@@ -47,6 +47,7 @@ public class GameController : MonoBehaviour {
 		if(EnemySpawner.Instance.IsBossWave) {
 			if(Health >= 1.0f) {
 				EnemySpawner.Instance.StopBoss();
+				Health = 0.0f;
 			}
 		}
 	}
@@ -60,8 +61,10 @@ public class GameController : MonoBehaviour {
      }
 
     public void LoseGame() {
-		SceneManager.LoadScene("lobby");
-		UI_phonescreen_script.LoseGame();
+		if(ServerNetworker.Instance != null)
+			ServerNetworker.Instance.GameLostOut();
+
+		SceneManager.LoadScene("selection");
     }
 
 	void CreateRitualists() {

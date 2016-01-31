@@ -113,6 +113,9 @@ public class RitualHandler {
 	public void OnNewAction(JSONArray json) {
 		for(int i = 0; i < json.Count; i++) {
 			if(json[i]["word"].Value.ToLower() == currentRitual[currentWordIndex].ToLower()) {
+
+				GameObject.Find("AudioPlayer").transform.FindChild("Succesful").GetComponent<AudioSource>().Play();
+
 				currentWordIndex++;
 
 				if(currentWordIndex >= currentRitual.Length) {
@@ -124,7 +127,9 @@ public class RitualHandler {
 				return;
 			}
 		}
-		
+
+		GameObject.Find("AudioPlayer").transform.FindChild("Unsuccesful").GetComponent<AudioSource>().Play();
+
 		currentWordIndex = 0;
 
 		GameUI.Instance.FlashRitualText("red");
