@@ -24,7 +24,7 @@ public class ClientNetworker : MonoBehaviour {
 		Application.runInBackground = true;
 		udpReceive = GetComponent<UDPReceive>();
 		udpSend = GetComponent<UDPSend>();
-
+		
 		sendLimit = 1.0f;
 		sendCounter = 0;
 
@@ -134,7 +134,7 @@ public class ClientNetworker : MonoBehaviour {
 
 		UI_phonescreen_script uiPhoneScreenScript = GameObject.Find("UI_phonescreen").GetComponent<UI_phonescreen_script>();
 		uiPhoneScreenScript.words = wordsIn;
-
+		uiPhoneScreenScript.UpdateWordTexts();
     }
 
 }
