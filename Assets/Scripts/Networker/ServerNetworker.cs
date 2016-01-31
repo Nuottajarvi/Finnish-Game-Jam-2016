@@ -105,4 +105,13 @@ public class ServerNetworker : MonoBehaviour {
 
 		udpSend.Send(data);
 	}
+
+	public void GameLostOut() {
+		JSONNode data = new JSONClass();
+
+		data["function"] = "GameStatus";
+		data["status"] = "lost";
+
+		udpSend.Send(data);
+	}
 }
