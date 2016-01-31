@@ -28,7 +28,7 @@ public class GameController : MonoBehaviour {
         instance = this;
         Health = StartingHealth;
 
-		jamRandomer = new System.Random();
+		jamRandomer = new System.Random(666);
     }
 
 	// Use this for initialization
