@@ -67,6 +67,8 @@ public class Demon : MonoBehaviour {
 			fireBall.transform.position+=new Vector3(3 + fireBall.transform.position.x,0,0) * Time.deltaTime;
 			yield return new WaitForFixedUpdate();
 		}
+
+		StartCoroutine("Reset");
 	}
 
 	public IEnumerator Reset(){
